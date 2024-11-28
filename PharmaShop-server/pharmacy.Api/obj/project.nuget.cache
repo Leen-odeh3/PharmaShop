@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "m5Tr7HZ0wZrVzlrtZhrWADs85jrFlRRNR3qAMKVQYHY9JR/nK4Qsd81XoPEeEwkuN75zAG8jLFKET3nX78QI+Q==",
+  "dgSpecHash": "otWQCTe5nYezVSfF4sXN3e7sLxJA8LMCANnA9PXSPu5GeYUhUnH6FGd+ZzwgH12raf/ap1btQZ5dpJb0o/wdsw==",
   "success": true,
   "projectFilePath": "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Api\\pharmacy.Api.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\hp\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
