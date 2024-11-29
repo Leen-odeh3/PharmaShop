@@ -9,7 +9,6 @@ using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.DTOs.Login;
 using pharmacy.Core.DTOs.Pharmacist;
 using pharmacy.Core.DTOs.shared;
-using pharmacy.Core.Entities;
 
 namespace pharmacy.Api.Controllers;
 

@@ -2,9 +2,10 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Entities.Identity;
 
 namespace pharmacy.Infrastructure.DbContext;
-public class ApplicationDbContext : IdentityDbContext
+public class ApplicationDbContext : IdentityDbContext<User>
 {
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> option):base(option)
     {
