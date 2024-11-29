@@ -10,3 +10,4 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\refint\pharmacy.Core.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.pdb
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\ref\pharmacy.Core.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.csproj.AssemblyReference.cache

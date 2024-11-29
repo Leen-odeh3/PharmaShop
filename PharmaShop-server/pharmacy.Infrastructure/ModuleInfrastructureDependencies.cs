@@ -1,7 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using pharmacy.Core.Contracts;
+using pharmacy.Core.Contracts.IAuthService;
+using pharmacy.Core.Contracts.ILogger;
+using pharmacy.Core.Entities.Identity;
+using pharmacy.Infrastructure.Application.AuthService;
+using pharmacy.Infrastructure.Application.Logger;
 using pharmacy.Infrastructure.DbContext;
 using pharmacy.Infrastructure.Repositories;
 
@@ -25,6 +31,14 @@ public static class ModuleInfrastructureDependencies
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
 
+        services.AddScoped<ILog, Log>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserManager,UserManager>();
+        services.AddScoped<ITokenService, TokenService>();
+
+        services.AddIdentity<User, IdentityRole>()
+          .AddEntityFrameworkStores<ApplicationDbContext>()
+          .AddDefaultTokenProviders();
 
         return services;
     }
