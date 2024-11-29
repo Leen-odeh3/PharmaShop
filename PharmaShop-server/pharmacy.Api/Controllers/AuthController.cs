@@ -9,9 +9,9 @@ using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.DTOs.Login;
 using pharmacy.Core.DTOs.Pharmacist;
 using pharmacy.Core.DTOs.shared;
+using pharmacy.Core.Enums;
 
 namespace pharmacy.Api.Controllers;
-
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
@@ -30,20 +30,8 @@ public class AuthController : ControllerBase
         _userManager = userManager;
         _tokenService = tokenService;
     }
-    [HttpPost("register/pharmacist")]
-    [Authorize(Roles = "Admin")]
-    public async Task<IActionResult> RegisterPharmacist([FromBody] PharmacistRequestDto registerDto)
-    {
-        try
-        {
-            var result = await _authService.RegisterPharmacistAsync(registerDto);
-            return _responseHandler.Success(result, "Phamacist registered successfully.");
-        }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest(ex.Message);
-        }
-    }
+   
+
     [HttpPost("register/admin")]
     public async Task<IActionResult> RegisterAdmin([FromBody] AdminDto registerAdminDto)
     {
@@ -77,6 +65,20 @@ public class AuthController : ControllerBase
         }
     }
 
+    [HttpPost("register/pharmacist")]
+    //[Authorize(Roles = "Admin")]
+    public async Task<IActionResult> RegisterPharmacist([FromBody] PharmacistRequestDto registerDto)
+    {
+        try
+        {
+            var result = await _authService.RegisterPharmacistAsync(registerDto);
+            return _responseHandler.Success(result, "Phamacist registered successfully.");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.BadRequest(ex.Message);
+        }
+    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
