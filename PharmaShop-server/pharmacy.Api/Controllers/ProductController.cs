@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using pharmacy.Api.Responses;
 using pharmacy.Core.Contracts;
 using pharmacy.Core.DTOs.Product;
 using pharmacy.Core.Entities;
+using pharmacy.Infrastructure.Application;
 
 namespace pharmacy.Api.Controllers;
 
@@ -13,14 +15,53 @@ public class ProductController : ControllerBase
 {
     private readonly IProductRepository _productRepository;
     private readonly IResponseHandler _responseHandler;
-    private readonly IMapper _mapper; 
+    private readonly IMapper _mapper;
+    private readonly IPhotoService _photoService;
 
-    public ProductController(IProductRepository productRepository, IResponseHandler responseHandler, IMapper mapper)
+    public ProductController(IProductRepository productRepository, IResponseHandler responseHandler, IMapper mapper,IPhotoService photoService)
     {
         _productRepository = productRepository;
         _responseHandler = responseHandler;
         _mapper = mapper; 
+        _photoService = photoService;
+
     }
+    [HttpPost("add-product")]
+    public async Task<IActionResult> AddProduct([FromForm] ProductRequestDto productDto, IFormFile image)
+    {
+        var uploadResult = await _photoService.UploadImageAsync(image);
+
+        if (uploadResult?.Url != null)
+        {
+            var product = new Product
+            {
+                ProductName = productDto.ProductName,
+                Price = productDto.Price,
+                ImageUrl = uploadResult?.Url?.ToString(),  
+                ImagePublicId = uploadResult?.PublicId,  
+                CategoryId = productDto.CategoryId
+            };
+
+           _productRepository.CreateAsync(product);
+
+            return Ok(new { message = "Product added successfully", product });
+        }
+
+        return BadRequest("Failed to upload image");
+    }
+    [HttpDelete("delete-product/{id}")]
+    public async Task<IActionResult> DeleteImageProduct(int id)
+    {
+        var product = await _productRepository.GetByID(id);
+        if (product == null)
+        {
+            return NotFound("Product not found");
+        }
+
+        var deleteResult = await _photoService.DeleteImageAsync(product.ImagePublicId);
+        return BadRequest("Failed to delete image from Cloudinary");
+    }
+
 
     [HttpPost]
     public async Task<IActionResult> AddProduct([FromBody] ProductRequestDto productRequestDto)

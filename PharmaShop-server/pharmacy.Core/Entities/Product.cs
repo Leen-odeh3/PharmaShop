@@ -15,4 +15,6 @@ public class Product
     public Category Category { get; set; }
     public int BrandId { get; set; }
     public Brand Brand { get; set; }
+    public string ImageUrl { get; set; } 
+    public string ImagePublicId { get; set; }
 }
