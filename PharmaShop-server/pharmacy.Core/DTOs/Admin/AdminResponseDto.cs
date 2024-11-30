@@ -1,6 +1,4 @@
-﻿
-
-namespace pharmacy.Core.DTOs.Admin;
+﻿namespace pharmacy.Core.DTOs.Admin;
 public class AdminResponseDto
 {
     public string Id { get; set; }

@@ -7,4 +7,5 @@ public class User : IdentityUser
     public string LastName { get; set; }
     public Roles UserType { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    public List<RefreshToken>? RefreshTokens { get; set; }
 }

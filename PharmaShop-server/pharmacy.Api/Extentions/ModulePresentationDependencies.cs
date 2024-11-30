@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
+using pharmacy.Core.Entities.Identity;
 using System.Text;
 
 namespace pharmacy.Api.Extentions;
@@ -13,19 +14,22 @@ public static class ModulePresentationDependencies
         services.AddScoped<IResponseHandler, ResponseHandler>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-               .AddJwtBearer(options =>
-               {
-                   options.TokenValidationParameters = new TokenValidationParameters
-                   {
-                       ValidateIssuer = true,
-                       ValidateAudience = true,
-                       ValidateLifetime = true,
-                       ValidateIssuerSigningKey = true,
-                       ValidIssuer = configuration["JWT:Issuer"],
-                       ValidAudience = configuration["JWT:Audience"],
-                       IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
-                   };
-               });
+     .AddJwtBearer(options =>
+     {
+         options.TokenValidationParameters = new TokenValidationParameters
+         {
+             ValidateIssuer = true,
+             ValidateAudience = true,
+             ValidateLifetime = true,
+             ValidateIssuerSigningKey = true,
+             ValidIssuer = configuration["JWT:Issuer"],
+             ValidAudience = configuration["JWT:Audience"],
+             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
+         };
+     });
+
+       services.Configure<JWT>(configuration.GetSection("JWT"));
+
 
         services.AddAuthorization(options =>
         {

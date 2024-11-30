@@ -1,45 +1,131 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Core.Contracts.IAuthService;
 using pharmacy.Core.Entities.Identity;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace pharmacy.Infrastructure.Application.AuthService;
 public class TokenService : ITokenService
 {
-    private readonly IConfiguration _configuration;
+    private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly JWT _jwt;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public TokenService(IConfiguration configuration)
+    public TokenService(UserManager<User> userManager, RoleManager<IdentityRole> roleManager, IOptions<JWT> jwt, IHttpContextAccessor httpContextAccessor)
     {
-        _configuration = configuration;
+        _userManager = userManager;
+        _roleManager = roleManager;
+        _jwt = jwt.Value;
+        _httpContextAccessor = httpContextAccessor;
     }
-
-    public string GenerateToken(User user)
+    public async Task<JwtSecurityToken> CreateJwtToken(User user)
     {
-        var claims = new List<Claim>
+        var userClaims = await _userManager.GetClaimsAsync(user);
+        var roles = await _userManager.GetRolesAsync(user);
+        var roleClaims = new List<Claim>();
+
+        foreach (var role in roles)
+            roleClaims.Add(new Claim(ClaimTypes.Role, role));
+
+        var claims = new[]
         {
-            new Claim(ClaimTypes.Email, user.Email),
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Role, user.UserType.ToString())
+                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(ClaimTypes.NameIdentifier, user.Id)
+            }
+        .Union(userClaims)
+        .Union(roleClaims);
+
+        var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));
+        var signingCredentials = new SigningCredentials(symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
+
+        var jwtSecurityToken = new JwtSecurityToken(
+            issuer: _jwt.Issuer,
+            audience: _jwt.Audience,
+            claims: claims,
+            expires: DateTime.Now.AddDays(_jwt.DurationInDays),
+            signingCredentials: signingCredentials);
+
+        return jwtSecurityToken;
+    }
+    public async Task<AuthModel> RefreshTokenAsync(string token)
+    {
+        var authModel = new AuthModel();
+
+        var user = await _userManager.Users.SingleOrDefaultAsync(u => u.RefreshTokens.Any(t => t.Token == token));
+
+        if (user is null)
+        {
+            authModel.Message = "Invalid token";
+            return authModel;
+        }
+
+        var refreshToken = user.RefreshTokens.Single(t => t.Token == token);
+
+        if (!refreshToken.IsActive)
+        {
+            authModel.Message = "Inactive token";
+            return authModel;
+        }
+
+        refreshToken.RevokedOn = DateTime.UtcNow;
+
+        var newRefreshToken = GenerateRefreshToken();
+        user.RefreshTokens.Add(newRefreshToken);
+        await _userManager.UpdateAsync(user);
+
+        var jwtToken = await CreateJwtToken(user);
+        authModel.IsAuthenticated = true;
+        authModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtToken);
+        authModel.Email = user.Email;
+        authModel.Username = user.UserName;
+        var roles = await _userManager.GetRolesAsync(user);
+        authModel.Roles = roles.ToList();
+        authModel.RefreshToken = newRefreshToken.Token;
+        authModel.RefreshTokenExpiration = newRefreshToken.ExpiresOn;
+
+        return authModel;
+    }
+    public RefreshToken GenerateRefreshToken()
+    {
+        var randomNumber = new byte[32];
+
+        using var generator = new RNGCryptoServiceProvider();
+
+        generator.GetBytes(randomNumber);
+
+        return new RefreshToken
+        {
+            Token = Convert.ToBase64String(randomNumber),
+            ExpiresOn = DateTime.UtcNow.AddDays(10),
+            CreatedOn = DateTime.UtcNow
+        };
+    }
+    public void SetRefreshTokenInCookie(string refreshToken, DateTime expires)
+    {
+        var httpContext = _httpContextAccessor.HttpContext;
+        if (httpContext is null)
+            throw new InvalidOperationException("HttpContext is not available.");
+
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = expires.ToLocalTime(),
+            Secure = true,
+            IsEssential = true,
+            SameSite = SameSiteMode.None
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
-        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-        var tokenDescriptor = new SecurityTokenDescriptor
-        {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.UtcNow.AddDays(7),
-            Issuer = _configuration["JWT:Issuer"],
-            Audience = _configuration["JWT:Audience"],
-            SigningCredentials = creds
-        };
-
-
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        httpContext.Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
     }
 }

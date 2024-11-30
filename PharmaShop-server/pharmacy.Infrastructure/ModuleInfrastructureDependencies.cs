@@ -33,7 +33,7 @@ public static class ModuleInfrastructureDependencies
 
         services.AddScoped<ILog, Log>();
         services.AddScoped<IAuthService, AuthService>();
-        services.AddScoped<IUserManager,UserManager>();
+      //  services.AddScoped<IUserManager,UserManager>();
         services.AddScoped<ITokenService, TokenService>();
 
         services.AddIdentity<User, IdentityRole>()
