@@ -1,9 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
+using pharmacy.Core;
 using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Infrastructure.Application;
+using pharmacy.Infrastructure.DbContext;
+using System.Reflection;
 using System.Text;
 
 namespace pharmacy.Api.Extentions;
@@ -38,7 +41,10 @@ public static class ModulePresentationDependencies
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
         });
 
+        services.AddAutoMapper(Assembly.GetExecutingAssembly());
+        services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Http;
 namespace pharmacy.Core.Contracts;
 public interface IPhotoService
 {
-    Task<ImageUploadResult> UploadImageAsync(IFormFile file);
+    Task<List<ImageUploadResult>> UploadImagesAsync(IEnumerable<IFormFile> files);
     Task<DeletionResult> DeleteImageAsync(string publicId);
 
 }

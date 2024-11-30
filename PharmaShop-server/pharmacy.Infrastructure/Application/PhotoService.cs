@@ -25,22 +25,27 @@ public class PhotoService : IPhotoService
       
     }
 
-    public async Task<ImageUploadResult> UploadImageAsync(IFormFile file)
+    public async Task<List<ImageUploadResult>> UploadImagesAsync(IEnumerable<IFormFile> files)
     {
-        var uploadResult = new ImageUploadResult();
+        var uploadResults = new List<ImageUploadResult>();
 
-        if (file.Length > 0)
+        foreach (var file in files)
         {
-            using var stream=file.OpenReadStream();
-            var uploadparams = new ImageUploadParams
+            if (file.Length > 0)
             {
-                File = new FileDescription(file.FileName, stream),
-                Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
-            };
+                using var stream = file.OpenReadStream();
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.FileName, stream),
+                    Transformation = new Transformation().Height(500).Width(500).Crop("fill").Gravity("face")
+                };
 
-            uploadResult = await _cloudinary.UploadAsync(uploadparams);
-        }     
-        return uploadResult;
+                var uploadResult = await _cloudinary.UploadAsync(uploadParams);
+                uploadResults.Add(uploadResult); 
+            }
+        }
 
+        return uploadResults;
     }
+
 }
