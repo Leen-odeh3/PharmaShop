@@ -14,7 +14,7 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddPresentationDependencies(builder.Configuration)
-                        .AddInfrastructureDependencies().AddSwaggerDocumentation();
+                        .AddInfrastructureDependencies().AddSwaggerDocumentation().AddCloudinary(builder.Configuration);
 
         var app = builder.Build();
 

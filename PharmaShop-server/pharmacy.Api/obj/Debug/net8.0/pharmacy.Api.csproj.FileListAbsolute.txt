@@ -154,3 +154,5 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\p
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\ref\pharmacy.Api.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\CloudinaryDotNet.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Newtonsoft.Json.dll

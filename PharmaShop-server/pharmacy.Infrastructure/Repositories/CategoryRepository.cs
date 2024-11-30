@@ -9,4 +9,5 @@ public class CategoryRepository : GenericRepository<Category> ,ICategoryReposito
     {
         
     }
+
 }
