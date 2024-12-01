@@ -15,6 +15,11 @@ public class Product
     public Category Category { get; set; }
     public int BrandId { get; set; }
     public Brand Brand { get; set; }
+
+    [ForeignKey("discount")]
+    public Discount discount { get; set; }
+    public Discount DiscountId { get; set; }
+
     public List<string> ImageUrls { get; set; } = new List<string>();
     public List<string> ImagePublicIds { get; set; } = new List<string>();
 }

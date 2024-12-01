@@ -42,10 +42,12 @@ public class ProductController : ControllerBase
             var product = new Product
             {
                 ProductName = productDto.ProductName,
+                ProductDescription= productDto.ProductDescription,
                 Price = productDto.Price,
                 ImageUrls = imageUrls,
                 ImagePublicIds = imagePublicIds,
-                CategoryId = productDto.CategoryId
+                CategoryId = productDto.CategoryId,
+                BrandId= productDto.BrandId,
             };
 
             await _unitOfWork.productRepository.CreateAsync(product);

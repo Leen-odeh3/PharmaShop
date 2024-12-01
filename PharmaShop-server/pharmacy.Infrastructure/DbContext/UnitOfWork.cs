@@ -16,6 +16,8 @@ public class UnitOfWork : IUnitOfWork
 
     public IPhotoService photoService { get; private set; }
 
+    public IDiscountRepository discountRepository { get; private set; }
+
     public UnitOfWork(ApplicationDbContext context, IPhotoService photoService)
     {
         _context = context;
@@ -23,6 +25,7 @@ public class UnitOfWork : IUnitOfWork
         productRepository = new ProductRepository(_context);
         categoryRepository = new CategoryRepository(_context);
         brandRepository = new BrandRepository(_context);
+        discountRepository= new DiscountRepository(_context);
     }
     public int Complete()
     {

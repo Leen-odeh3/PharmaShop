@@ -7,5 +7,6 @@ public interface IUnitOfWork
     IProductRepository productRepository { get; }
     IBrandRepository brandRepository { get; }
     IPhotoService photoService { get; }
+    IDiscountRepository discountRepository { get; }
     int Complete();
 }
