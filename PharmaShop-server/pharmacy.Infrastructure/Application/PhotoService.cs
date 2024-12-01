@@ -12,7 +12,17 @@ public class PhotoService : IPhotoService
     public PhotoService(IOptions<CloudinarySettings> cloudinarySettings)
     {
         var cloudinary = cloudinarySettings.Value;
+        if (cloudinary == null || string.IsNullOrEmpty(cloudinary.CloudName) || string.IsNullOrEmpty(cloudinary.ApiKey) || string.IsNullOrEmpty(cloudinary.ApiSecret))
+        {
+            throw new InvalidOperationException("Cloudinary settings are not properly configured.");
+        }
+
         _cloudinary = new Cloudinary(new Account(cloudinary.CloudName, cloudinary.ApiKey, cloudinary.ApiSecret));
+
+        if (_cloudinary == null)
+        {
+            throw new InvalidOperationException("Cloudinary instance could not be initialized.");
+        }
     }
 
     public async Task<DeletionResult> DeleteImageAsync(string publicId)

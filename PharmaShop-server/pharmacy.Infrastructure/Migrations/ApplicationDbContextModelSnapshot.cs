@@ -197,11 +197,11 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ImagePublicIds")
+                    b.Property<string>("ImagePublicIdsJson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrls")
+                    b.Property<string>("ImageUrlsJson")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

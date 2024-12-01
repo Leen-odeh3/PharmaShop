@@ -47,9 +47,11 @@ public class BrandController : ControllerBase
             return _responseHandler.BadRequest("Invalid brand data.");
         }
 
-        var brand = _mapper.Map<Brand>(brandRequestDto);  
+        var brand = _mapper.Map<Brand>(brandRequestDto);
+        brand.BrandId = id;
 
-        var updatedBrand = await _unitOfWork.brandRepository.UpdateAsync(brand);
+
+        var updatedBrand = await _unitOfWork.brandRepository.UpdateAsync(id, brand);
         _unitOfWork.Complete();
         if (updatedBrand is null)
         {

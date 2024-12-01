@@ -1,5 +1,6 @@
 ﻿using pharmacy.Core;
 using pharmacy.Core.Contracts;
+using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.Repositories;
 
 namespace pharmacy.Infrastructure.DbContext;
@@ -13,12 +14,15 @@ public class UnitOfWork : IUnitOfWork
 
     public IBrandRepository brandRepository { get; private set; }
 
-    public UnitOfWork(ApplicationDbContext context)
+    public IPhotoService photoService { get; private set; }
+
+    public UnitOfWork(ApplicationDbContext context, IPhotoService photoService)
     {
         _context = context;
+        this.photoService = photoService;
         productRepository = new ProductRepository(_context);
         categoryRepository = new CategoryRepository(_context);
-        brandRepository=new BrandRepository(_context);
+        brandRepository = new BrandRepository(_context);
     }
     public int Complete()
     {

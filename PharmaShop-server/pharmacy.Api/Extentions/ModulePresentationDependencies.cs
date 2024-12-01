@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
 using pharmacy.Core;
 using pharmacy.Core.Contracts;
+using pharmacy.Core.Entities.Helpers;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.DbContext;
@@ -40,6 +42,8 @@ public static class ModulePresentationDependencies
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
         });
+
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
