@@ -91,24 +91,30 @@ public class CategoryController : ControllerBase
 
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateProduct(int id, [FromBody] CategoryRequestDto categoryRequestDto)
+    public async Task<IActionResult> Updatecategory(int id, [FromBody] CategoryRequestDto categoryRequestDto)
     {
         if (categoryRequestDto is null)
         {
-            return _responseHandler.BadRequest("Invalid product data.");
+            return _responseHandler.BadRequest("Invalid category data.");
         }
 
-        var category = _mapper.Map<Category>(categoryRequestDto);
-
-        var updatedcategory = await _unitOfWork.categoryRepository.UpdateAsync(id,category);
-        _unitOfWork.Complete();
-        if (updatedcategory is null)
+        var category = await _unitOfWork.categoryRepository.GetByID(id);
+        if (category is null)
         {
             return _responseHandler.NotFound("Category not found.");
         }
 
-        return _responseHandler.Success(updatedcategory, "Category updated successfully.");
+        category.CategoryName = categoryRequestDto.CategoryName;
+        category.CategoryDescription = categoryRequestDto.CategoryDescription;
+
+        var updatedCategory = await _unitOfWork.categoryRepository.UpdateAsync(id, category);
+
+        _unitOfWork.Complete();
+
+        return _responseHandler.Success(updatedCategory, "Category updated successfully.");
     }
+
+
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteImageCategory(int id)
