@@ -25,6 +25,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context.Set<T>().Remove(model);
         return "Entity deleted successfully";
     }
+
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
@@ -35,14 +36,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         return await _context.Set<T>().FindAsync(id);
     }
 
-    public async Task<T> UpdateAsync(T entity)
+    public async Task<T> UpdateAsync(int id, T entity)
     {
-        var existingEntity = await _context.Set<T>().FindAsync(entity);
+        var existingEntity = await _context.Set<T>().FindAsync(id);
+
         if (existingEntity is null)
-        {
-            _context.Set<T>().Attach(entity);
-        }
-        _context.Set<T>().Update(entity);
-        return entity;
+            return null;  
+
+        _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+
+        return existingEntity;
     }
 }

@@ -137,7 +137,6 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\p
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Infrastructure.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Core.pdb
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Infrastructure.pdb
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\pharmacy.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\staticwebassets\msbuild.pharmacy.Api.Microsoft.AspNetCore.StaticWebAssets.props
@@ -156,3 +155,4 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\A
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\CloudinaryDotNet.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\pharmacy.Api.MvcApplicationPartsAssemblyInfo.cs

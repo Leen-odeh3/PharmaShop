@@ -6,5 +6,4 @@ public interface IPhotoService
 {
     Task<List<ImageUploadResult>> UploadImagesAsync(IEnumerable<IFormFile> files);
     Task<DeletionResult> DeleteImageAsync(string publicId);
-
 }

@@ -13,12 +13,21 @@ public class UnitOfWork : IUnitOfWork
 
     public IBrandRepository brandRepository { get; private set; }
 
-    public UnitOfWork(ApplicationDbContext context)
+    public IPhotoService photoService { get; private set; }
+
+    public IDiscountRepository discountRepository { get; private set; }
+    public IOrderRepository orderRepository { get; private set; }
+    public IOrderItemRepository orderItemRepository { get; private set; }
+
+    public UnitOfWork(ApplicationDbContext context, IPhotoService photoService)
     {
         _context = context;
+        this.photoService = photoService;
         productRepository = new ProductRepository(_context);
         categoryRepository = new CategoryRepository(_context);
-        brandRepository=new BrandRepository(_context);
+        brandRepository = new BrandRepository(_context);
+        discountRepository= new DiscountRepository(_context);
+        orderRepository=new OrderRepository(_context);  
     }
     public int Complete()
     {

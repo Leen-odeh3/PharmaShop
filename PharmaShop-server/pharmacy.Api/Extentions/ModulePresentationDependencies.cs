@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
 using pharmacy.Core;
 using pharmacy.Core.Contracts;
+using pharmacy.Core.Entities.Helpers;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.DbContext;
@@ -15,8 +17,6 @@ public static class ModulePresentationDependencies
     public static IServiceCollection AddPresentationDependencies(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddSingleton<IConfiguration>(configuration);
-
-        services.AddScoped<IResponseHandler, ResponseHandler>();
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
@@ -36,15 +36,19 @@ public static class ModulePresentationDependencies
        services.Configure<JWT>(configuration.GetSection("JWT"));
 
         services.AddScoped<IPhotoService, PhotoService>();
-        services.AddAuthorization(options =>
+        /* services.AddAuthorization(options =>
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-        });
+        });*/
+
+        services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
         services.AddAutoMapper(Assembly.GetExecutingAssembly());
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IResponseHandler, ResponseHandler>();
+
         return services;
     }
 }

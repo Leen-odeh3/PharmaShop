@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using pharmacy.Api.Responses;
 using pharmacy.Core;
 using pharmacy.Core.Contracts;
 using pharmacy.Core.DTOs.Product;
 using pharmacy.Core.Entities;
-using pharmacy.Infrastructure.Application;
 
 namespace pharmacy.Api.Controllers;
 
@@ -17,21 +15,18 @@ public class ProductController : ControllerBase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IResponseHandler _responseHandler;
     private readonly IMapper _mapper;
-    private readonly IPhotoService _photoService;
 
-    public ProductController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper,IPhotoService photoService)
+    public ProductController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper)
     {
         _unitOfWork = unitOfWork;
         _responseHandler = responseHandler;
         _mapper = mapper; 
-        _photoService = photoService;
-
     }
 
-    [HttpPost("add-product")]
+    [HttpPost("Addproduct")]
     public async Task<IActionResult> AddProduct([FromForm] ProductRequestDto productDto, [FromForm] List<IFormFile> images)
     {
-        var uploadResults = await _photoService.UploadImagesAsync(images);
+        var uploadResults = await _unitOfWork.photoService.UploadImagesAsync(images);
 
         if (uploadResults?.Any() == true)
         {
@@ -47,10 +42,15 @@ public class ProductController : ControllerBase
             var product = new Product
             {
                 ProductName = productDto.ProductName,
+                ProductDescription= productDto.ProductDescription,
                 Price = productDto.Price,
                 ImageUrls = imageUrls,
                 ImagePublicIds = imagePublicIds,
-                CategoryId = productDto.CategoryId
+                CategoryId = productDto.CategoryId,
+                DiscountId = productDto.discountId,
+                BrandId = productDto.BrandId,
+                ImageUrlsJson = imageUrls.Any() ? System.Text.Json.JsonSerializer.Serialize(imageUrls) : "[]",
+                ImagePublicIdsJson = imagePublicIds.Any() ? System.Text.Json.JsonSerializer.Serialize(imagePublicIds) : "[]",
             };
 
             await _unitOfWork.productRepository.CreateAsync(product);
@@ -60,22 +60,6 @@ public class ProductController : ControllerBase
         }
 
         return BadRequest("Failed to upload images.");
-    }
-
-
-    [HttpPost]
-    public async Task<IActionResult> AddProduct([FromBody] ProductRequestDto productRequestDto)
-    {
-        if (productRequestDto is null)
-        {
-            return _responseHandler.BadRequest("Invalid product data.");
-        }
-
-        var product = _mapper.Map<Product>(productRequestDto);
-
-        var productResponseDto = await _unitOfWork.productRepository.CreateAsync(product);
-        _unitOfWork.Complete();
-        return _responseHandler.Created(productResponseDto, "Product created successfully.");
     }
 
     [HttpPut("{id}")]
@@ -89,7 +73,7 @@ public class ProductController : ControllerBase
         var product = _mapper.Map<Product>(productRequestDto);
         product.ProductId = id;  
 
-        var updatedProduct = await _unitOfWork.productRepository.UpdateAsync(product);
+        var updatedProduct = await _unitOfWork.productRepository.UpdateAsync(id, product);
         _unitOfWork.Complete();
         if (updatedProduct is null)
         {
