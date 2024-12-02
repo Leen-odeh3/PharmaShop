@@ -1,6 +1,5 @@
 ﻿using pharmacy.Core;
 using pharmacy.Core.Contracts;
-using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.Repositories;
 
 namespace pharmacy.Infrastructure.DbContext;
@@ -17,6 +16,8 @@ public class UnitOfWork : IUnitOfWork
     public IPhotoService photoService { get; private set; }
 
     public IDiscountRepository discountRepository { get; private set; }
+    public IOrderRepository orderRepository { get; private set; }
+    public IOrderItemRepository orderItemRepository { get; private set; }
 
     public UnitOfWork(ApplicationDbContext context, IPhotoService photoService)
     {
@@ -26,6 +27,7 @@ public class UnitOfWork : IUnitOfWork
         categoryRepository = new CategoryRepository(_context);
         brandRepository = new BrandRepository(_context);
         discountRepository= new DiscountRepository(_context);
+        orderRepository=new OrderRepository(_context);  
     }
     public int Complete()
     {

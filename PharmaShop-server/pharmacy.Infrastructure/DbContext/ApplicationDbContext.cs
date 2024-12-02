@@ -19,4 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Admin> admins { get; set; }
     public DbSet<Pharmacist> pharmacists { get; set; }
     public DbSet<Discount> discounts { get; set; }
+    public DbSet<Order> orders { get; set; }
+    public DbSet<OrderItem> ordersItem { get; set; }
 }
