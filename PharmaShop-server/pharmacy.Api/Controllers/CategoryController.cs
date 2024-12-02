@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using pharmacy.Api.Responses;
 using pharmacy.Core;
 using pharmacy.Core.DTOs.Category;
@@ -27,6 +28,11 @@ public class CategoryController : ControllerBase
     [HttpPost("add-category")]
     public async Task<IActionResult> AddCategory([FromForm] CategoryRequestDto Dto, [FromForm] List<IFormFile> images)
     {
+        if (images == null || !images.Any())
+        {
+            return BadRequest("No images provided.");
+        }
+
         var uploadResults = await _unitOfWork.photoService.UploadImagesAsync(images);
 
         if (uploadResults?.Any() == true)
@@ -36,16 +42,24 @@ public class CategoryController : ControllerBase
 
             foreach (var result in uploadResults)
             {
-                imageUrls.Add(result?.Url?.ToString());
-                imagePublicIds.Add(result?.PublicId);   
+                if (result?.Url != null && result?.PublicId != null)
+                {
+                    imageUrls.Add(result?.Url?.ToString());
+                    imagePublicIds.Add(result?.PublicId);
+                }
+            }
+
+            if (imageUrls.Count == 0 || imagePublicIds.Count == 0)
+            {
+                return BadRequest("No valid images uploaded.");
             }
 
             var category = new Category
             {
                 CategoryName = Dto.CategoryName,
                 CategoryDescription = Dto.CategoryDescription,
-                ImageUrls = imageUrls, 
-                ImagePublicIds = imagePublicIds, 
+                ImageUrlsJson = imageUrls.Any() ? System.Text.Json.JsonSerializer.Serialize(imageUrls) : "[]",  
+                ImagePublicIdsJson = imagePublicIds.Any() ? System.Text.Json.JsonSerializer.Serialize(imagePublicIds) : "[]", 
             };
 
             await _unitOfWork.categoryRepository.CreateAsync(category);
@@ -56,6 +70,7 @@ public class CategoryController : ControllerBase
 
         return BadRequest("Failed to upload images.");
     }
+
 
 
     [HttpDelete("delete-category/{id}")]
@@ -104,6 +119,7 @@ public class CategoryController : ControllerBase
             return _responseHandler.NotFound("Category not found.");
         }
 
+
         category.CategoryName = categoryRequestDto.CategoryName;
         category.CategoryDescription = categoryRequestDto.CategoryDescription;
 
@@ -134,30 +150,30 @@ public class CategoryController : ControllerBase
             return _responseHandler.NotFound("Category not found.");
         }
 
-        var categoryDto = new CategoryResponseDto
-        {
-            CategoryId = category.CategoryId,
-            CategoryName = category.CategoryName,
-            CategoryDescription = category.CategoryDescription,
-            CreatedAt = category.CreatedAt,
-            UpdatedAt = category.UpdatedAt,
-            ImageUrls = string.IsNullOrEmpty(category.ImageUrlsJson) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(category.ImageUrlsJson),
-            ImagePublicIds = string.IsNullOrEmpty(category.ImagePublicIdsJson) ? new List<string>() : JsonSerializer.Deserialize<List<string>>(category.ImagePublicIdsJson),
-        };
+        var categoryDto = _mapper.Map<CategoryResponseDto>(category);
 
         return _responseHandler.Success(categoryDto, "Category retrieved successfully.");
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllCategories()
+    [HttpGet("get-categories")]
+    public async Task<IActionResult> GetCategories()
     {
         var categories = await _unitOfWork.categoryRepository.GetAllAsync();
 
         if (categories == null || !categories.Any())
         {
-            return _responseHandler.NotFound("No categories found.");
+            return NotFound("No categories found.");
         }
+        var categoryDtos = _mapper.Map<List<CategoryResponseDto>>(categories);
 
-        return _responseHandler.Success(categories, "Categories retrieved successfully.");
+        return Ok(new
+        {
+            statusCode = 200,
+            succeeded = true,
+            message = "Categories retrieved successfully.",
+            data = categoryDtos
+        });
     }
+
+
 }

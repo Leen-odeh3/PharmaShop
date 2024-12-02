@@ -45,7 +45,7 @@ public class DiscountRepository : GenericRepository<Discount> , IDiscountReposit
         if (discount == null)  return 0;
 
         var product = await _context.products
-                                     .Where(p => p.discount.DiscountId == id)  
+                                     .Where(p => p.Discount.DiscountId == id)  
                                      .FirstOrDefaultAsync();
 
         if (product is null)

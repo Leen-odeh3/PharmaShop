@@ -1,4 +1,6 @@
-﻿namespace pharmacy.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace pharmacy.Core.Entities;
 public class Discount
 {
     public int DiscountId { get; set; }
@@ -8,7 +10,6 @@ public class Discount
     public DateTime CreatedAtUtc { get; set; }
 
     public bool IsActive { get; set; }
-    public ICollection<Product> Products { get; set; }  
     public Discount()
     {
         CreatedAtUtc = DateTime.UtcNow;

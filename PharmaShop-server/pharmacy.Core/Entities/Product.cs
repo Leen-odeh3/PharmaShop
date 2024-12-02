@@ -1,25 +1,23 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using pharmacy.Core.Entities.Helpers;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pharmacy.Core.Entities;
-public class Product
+public class Product : BaseEntity
 {
     public int ProductId { get; set; }
     public string ProductName { get; set; }
     public string ProductDescription { get; set; }
-    public int Discount { get; set; }
     public int Price { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
     public DateTime UpdatedAt { get; set; } = DateTime.Now;
+
     [ForeignKey("Category")]
     public int CategoryId { get; set; }
     public Category Category { get; set; }
+
+    [ForeignKey("Brand")]
     public int BrandId { get; set; }
     public Brand Brand { get; set; }
-
-    [ForeignKey("discount")]
-    public Discount discount { get; set; }
-    public Discount DiscountId { get; set; }
-
-    public List<string> ImageUrls { get; set; } = new List<string>();
-    public List<string> ImagePublicIds { get; set; } = new List<string>();
+    public Discount Discount { get; set; }
+    public int DiscountId { get; set; }
 }

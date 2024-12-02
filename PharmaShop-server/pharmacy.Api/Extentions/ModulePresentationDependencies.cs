@@ -18,8 +18,6 @@ public static class ModulePresentationDependencies
     {
         services.AddSingleton<IConfiguration>(configuration);
 
-        services.AddScoped<IResponseHandler, ResponseHandler>();
-
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
      .AddJwtBearer(options =>
      {
@@ -38,10 +36,10 @@ public static class ModulePresentationDependencies
        services.Configure<JWT>(configuration.GetSection("JWT"));
 
         services.AddScoped<IPhotoService, PhotoService>();
-        services.AddAuthorization(options =>
+        /* services.AddAuthorization(options =>
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-        });
+        });*/
 
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
@@ -49,6 +47,8 @@ public static class ModulePresentationDependencies
         services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
+        services.AddScoped<IResponseHandler, ResponseHandler>();
+
         return services;
     }
 }

@@ -9,4 +9,6 @@ public class ProductResponseDto
     public int Price { get; set; }
     public String Category { get; set; }
     public String Brand { get; set; }
+    public List<string> ImageUrls { get; set; } = new List<string>();
+    public List<string> ImagePublicIds { get; set; } = new List<string>();
 }

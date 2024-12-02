@@ -47,7 +47,10 @@ public class ProductController : ControllerBase
                 ImageUrls = imageUrls,
                 ImagePublicIds = imagePublicIds,
                 CategoryId = productDto.CategoryId,
-                BrandId= productDto.BrandId,
+                DiscountId = productDto.discountId,
+                BrandId = productDto.BrandId,
+                ImageUrlsJson = imageUrls.Any() ? System.Text.Json.JsonSerializer.Serialize(imageUrls) : "[]",
+                ImagePublicIdsJson = imagePublicIds.Any() ? System.Text.Json.JsonSerializer.Serialize(imagePublicIds) : "[]",
             };
 
             await _unitOfWork.productRepository.CreateAsync(product);

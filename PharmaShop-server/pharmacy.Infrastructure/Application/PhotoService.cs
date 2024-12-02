@@ -12,7 +12,7 @@ public class PhotoService : IPhotoService
     public PhotoService(IOptions<CloudinarySettings> cloudinarySettings)
     {
         var cloudinary = cloudinarySettings.Value;
-        if (cloudinary == null || string.IsNullOrEmpty(cloudinary.CloudName) || string.IsNullOrEmpty(cloudinary.ApiKey) || string.IsNullOrEmpty(cloudinary.ApiSecret))
+        if (cloudinary is null || string.IsNullOrEmpty(cloudinary.CloudName) || string.IsNullOrEmpty(cloudinary.ApiKey) || string.IsNullOrEmpty(cloudinary.ApiSecret))
         {
             throw new InvalidOperationException("Cloudinary settings are not properly configured.");
         }
