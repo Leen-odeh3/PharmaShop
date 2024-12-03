@@ -1,9 +1,9 @@
-
+import AdminSidebar from "../Admin/AdminSidebar"
 
 const User = () => {
   return (
-    <div>
-      user
+    <div className="admin-container">
+      <AdminSidebar />
     </div>
   )
 }

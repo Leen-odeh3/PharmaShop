@@ -1,8 +1,8 @@
-
+import AdminSidebar from "../Admin/AdminSidebar"
 const Brand = () => {
   return (
-    <div>
-      brand
+    <div className="admin-container">
+    <AdminSidebar />
     </div>
   )
 }

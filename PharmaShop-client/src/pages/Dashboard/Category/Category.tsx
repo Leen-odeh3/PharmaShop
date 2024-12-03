@@ -1,9 +1,9 @@
-
+import AdminSidebar from "../Admin/AdminSidebar"
 
 const Category = () => {
   return (
-    <div>
-      category
+    <div className="admin-container">
+  <AdminSidebar />
     </div>
   )
 }

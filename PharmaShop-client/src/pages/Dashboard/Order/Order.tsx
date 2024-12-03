@@ -1,8 +1,8 @@
-
+import AdminSidebar from "../Admin/AdminSidebar"
 const Order = () => {
   return (
-    <div>
-      orders
+    <div className="admin-container">
+      <AdminSidebar />
     </div>
   )
 }

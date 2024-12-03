@@ -1,8 +1,8 @@
-
+import AdminSidebar from "../Dashboard/Admin/AdminSidebar"
 const PieChart = () => {
   return (
-    <div>
-      PieCharts
+    <div className="admin-container">
+        <AdminSidebar />
     </div>
   )
 }

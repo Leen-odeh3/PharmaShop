@@ -1,9 +1,9 @@
-
+import AdminSidebar from "../Dashboard/Admin/AdminSidebar"
 
 const LineChart = () => {
   return (
-    <div>
-      LineCharts
+    <div className="admin-container">
+        <AdminSidebar />
     </div>
   )
 }
