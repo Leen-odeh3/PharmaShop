@@ -1,10 +1,18 @@
 ﻿
+using pharmacy.Core.DTOs.Customer;
+
 namespace pharmacy.Core.DTOs.Order;
-public class OrderResponseDTO
+public class OrderResponseDto
 {
-    public int OrderID { get; set; }  
-    public int CustomerID { get; set; } 
-    public DateTime OrderDate { get; set; }
-    public decimal TotalAmount { get; set; }  
-    public List<OrderItemResponseDTO> OrderItems { get; set; } 
+    public long Id { get; set; }
+    public int OrderNumber { get; set; }
+    public string Country { get; set; }
+    public string City { get; set; }
+    public string Street { get; set; }
+    public string ZipCode { get; set; }
+    public decimal TotalPrice { get; set; }
+    public string OrderStatus { get; set; }
+    public DateTime CreatedDate { get; set; }
+    public CustomerResponseDto Customer { get; set; }
+    public List<OrderItemResponseDTO> OrderItems { get; set; }
 }

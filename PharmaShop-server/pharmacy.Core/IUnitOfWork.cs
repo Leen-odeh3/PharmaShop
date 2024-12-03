@@ -9,5 +9,9 @@ public interface IUnitOfWork
     IPhotoService photoService { get; }
     IDiscountRepository discountRepository { get; }
     IOrderItemRepository orderItemRepository { get; }
+    public ICartRepository cartRepository { get;  }
+    public ICartItemRepository cartItemRepository { get; }
+    IPaymentMethodRepository PaymentMethodRepository { get; }
+    public IReviewRepository reviewRepository { get;  }
     int Complete();
 }

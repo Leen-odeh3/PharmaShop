@@ -31,6 +31,11 @@ public static class ModuleInfrastructureDependencies
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
+        services.AddScoped<ICartRepository, CartRepository>();
+        services.AddScoped<IPaymentMethodRepository,PaymentMethodRepository>();
+        services.AddScoped<IReviewRepository, ReviewRepository>();
+        services.AddScoped<IOrderItemRepository,OrderItemRepository>();
+        services.AddScoped<IOrderRepository, OrderRepository>();
 
         services.AddScoped<ILog, Log>();
         services.AddScoped<IAuthService, AuthService>();
