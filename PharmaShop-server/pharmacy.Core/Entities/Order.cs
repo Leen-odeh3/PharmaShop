@@ -4,7 +4,7 @@ using pharmacy.Core.Enums;
 namespace pharmacy.Core.Entities;
 public class Order
 {
-    public long Id { get; set; }
+    public int OrderId { get; set; }
     public int OrderNumber { get; set; }
     public string Country { get; set; }
     public string City { get; set; }
