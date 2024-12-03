@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Routing from "./Routing/index";
 import { DotLoader } from "react-spinners";
+import './styles/app.scss'
 
 const App = () => {
   const [loading, setLoading] = useState<boolean>(true); 
