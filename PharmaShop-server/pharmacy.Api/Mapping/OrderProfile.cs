@@ -7,10 +7,10 @@ public class OrderProfile :Profile
 {
     public OrderProfile()
     {
-        CreateMap<Order, OrderResponseDTO>()
+        CreateMap<Order, OrderResponseDto>()
                     .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));
 
-        CreateMap<OrderRequestDTO, Order>()
+        CreateMap<OrderRequestDto, Order>()
             .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));
 
         CreateMap<OrderItem, OrderItemResponseDTO>();

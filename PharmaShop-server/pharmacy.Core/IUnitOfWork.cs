@@ -8,6 +8,11 @@ public interface IUnitOfWork
     IBrandRepository brandRepository { get; }
     IPhotoService photoService { get; }
     IDiscountRepository discountRepository { get; }
+    IOrderRepository orderRepository { get; }
     IOrderItemRepository orderItemRepository { get; }
+    public ICartRepository cartRepository { get;  }
+    public ICartItemRepository cartItemRepository { get; }
+    IPaymentMethodRepository PaymentMethodRepository { get; }
+    public IReviewRepository reviewRepository { get;  }
     int Complete();
 }

@@ -16,14 +16,14 @@ public class OrderRepository :GenericRepository<Order> ,IOrderRepository
         return await _context.orders
                              .Include(o => o.OrderItems)
                              .ThenInclude(oi => oi.Product)  
-                             .FirstOrDefaultAsync(o => o.OrderID == orderId);
+                             .FirstOrDefaultAsync(o => o.OrderId == orderId);
     }
 
     public async Task<decimal> CalculateOrderTotalAmount(int orderId)
     {
         var order = await GetOrderWithDetailsAsync(orderId);
-        if (order == null) return 0;
+        if (order is null) return 0;
 
-        return order.OrderItems.Sum(item => item.Quantity * item.DiscountedPrice);
+        return order.OrderItems.Sum(item => item.Quantity * item.Price);
     }
 }

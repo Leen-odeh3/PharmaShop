@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using pharmacy.Core.Entities;
 using pharmacy.Core.Entities.Identity;
@@ -21,4 +20,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Discount> discounts { get; set; }
     public DbSet<Order> orders { get; set; }
     public DbSet<OrderItem> ordersItem { get; set; }
+    public DbSet<Review> Reviews { get; set; }
+    public DbSet<Cart> Carts { get; set; }
+    public DbSet<CartItem> CartItems { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<Transaction> Transactions { get; set; }
 }

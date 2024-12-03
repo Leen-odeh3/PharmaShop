@@ -24,14 +24,14 @@ namespace pharmacy.Api.Controllers
 
         // POST api/orders
         [HttpPost]
-        public async Task<IActionResult> AddOrder([FromBody] OrderRequestDTO orderRequestDto)
+        public async Task<IActionResult> AddOrder([FromBody] OrderRequestDto orderRequestDto)
         {
             if (orderRequestDto is null)
             {
                 return _responseHandler.BadRequest("Invalid order data.");
             }
 
-            var order = _mapper.Map<Order>(orderRequestDto);  // Mapping from DTO to Entity
+            var order = _mapper.Map<Order>(orderRequestDto); 
 
             var orderResponseDto = await _unitOfWork.orderRepository.CreateAsync(order);
             _unitOfWork.Complete();
@@ -40,7 +40,7 @@ namespace pharmacy.Api.Controllers
 
         // PUT api/orders/{id}
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderRequestDTO orderRequestDto)
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderRequestDto orderRequestDto)
         {
             if (orderRequestDto is null)
             {
@@ -48,7 +48,7 @@ namespace pharmacy.Api.Controllers
             }
 
             var order = _mapper.Map<Order>(orderRequestDto);
-            order.OrderID = id;
+            //order.OrderID = id;
 
             var updatedOrder = await _unitOfWork.orderRepository.UpdateAsync(id, order);
             _unitOfWork.Complete();
