@@ -126,7 +126,7 @@ public class AuthService : IAuthService
     public async Task<AuthModel> Login(LoginDto login)
     {
         var user = await _userManager.FindByEmailAsync(login.Email);
-        if (user == null || !await _userManager.CheckPasswordAsync(user, login.Password))
+        if (user is null || !await _userManager.CheckPasswordAsync(user, login.Password))
         {
             return new AuthModel
             {
@@ -149,7 +149,8 @@ public class AuthService : IAuthService
             RefreshTokenExpiration = refreshToken.ExpiresOn,
             Username = user.UserName,
             Email = user.Email,
-            Roles = (List<string>)await _userManager.GetRolesAsync(user)
-        };
+            Roles = (List<string>)await _userManager.GetRolesAsync(user),
+            ExpiresOn= jwtToken.ValidTo
+    };
     }
 }

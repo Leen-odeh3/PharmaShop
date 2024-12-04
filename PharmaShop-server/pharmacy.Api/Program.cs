@@ -14,7 +14,8 @@ public class Program
         builder.Services.AddSwaggerGen();
 
         builder.Services.AddPresentationDependencies(builder.Configuration)
-                        .AddInfrastructureDependencies().AddSwaggerDocumentation().AddCloudinary(builder.Configuration);
+                        .AddInfrastructureDependencies()
+                        .AddSwaggerDocumentation().AddCloudinary(builder.Configuration).AddCorsPolicy();
 
         var app = builder.Build();
 
@@ -25,7 +26,7 @@ public class Program
         }
 
         app.UseHttpsRedirection();
-
+        app.UseCors("AllowAll");
         app.UseAuthentication();  
         app.UseAuthorization();  
 

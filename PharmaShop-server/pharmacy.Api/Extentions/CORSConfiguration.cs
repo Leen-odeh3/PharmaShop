@@ -5,12 +5,8 @@ public static class CorsServiceExtensions
     {
         services.AddCors(options =>
         {
-            options.AddDefaultPolicy(policy =>
-            {
-                policy.AllowAnyOrigin()
-                      .AllowAnyMethod()
-                      .AllowAnyHeader();
-            });
+            options.AddPolicy("AllowAll", builder =>
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
         });
 
         return services;

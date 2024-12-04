@@ -55,7 +55,13 @@ const Navbar = () => {
           className="font-bold text-secondary sm:px-3 px-6"
           onClick={() => navigate("login")}
         >
-          SIGN IN
+          SignIn
+        </button>
+        <button
+          className="font-bold text-secondary sm:px-3 px-6"
+          onClick={() => navigate("register")}
+        >
+          Register
         </button>
 
         <div className="flex justify-between items-center">
