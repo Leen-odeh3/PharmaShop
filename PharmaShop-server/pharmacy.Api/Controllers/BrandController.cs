@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
 using pharmacy.Core;
 using pharmacy.Core.Contracts;
+using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Brand;
 using pharmacy.Core.Entities;
 
@@ -13,15 +14,13 @@ namespace pharmacy.Api.Controllers;
 [ApiController]
 public class BrandController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork; 
+    private readonly IBrandService _brandService;
     private readonly IResponseHandler _responseHandler;
-    private readonly IMapper _mapper;
 
-    public BrandController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper)
+    public BrandController(IBrandService brandService, IResponseHandler responseHandler)
     {
-        _unitOfWork = unitOfWork;
+        _brandService = brandService;
         _responseHandler = responseHandler;
-        _mapper = mapper;
     }
 
     [HttpPost]
@@ -32,10 +31,7 @@ public class BrandController : ControllerBase
             return _responseHandler.BadRequest("Invalid brand data.");
         }
 
-        var brand = _mapper.Map<Brand>(brandRequestDto); 
-
-        var brandResponseDto = await _unitOfWork.brandRepository.CreateAsync(brand);
-        _unitOfWork.Complete();
+        var brandResponseDto = await _brandService.AddBrandAsync(brandRequestDto);
         return _responseHandler.Created(brandResponseDto, "Brand created successfully.");
     }
 
@@ -47,13 +43,8 @@ public class BrandController : ControllerBase
             return _responseHandler.BadRequest("Invalid brand data.");
         }
 
-        var brand = _mapper.Map<Brand>(brandRequestDto);
-        brand.BrandId = id;
-
-
-        var updatedBrand = await _unitOfWork.brandRepository.UpdateAsync(id, brand);
-        _unitOfWork.Complete();
-        if (updatedBrand is null)
+        var updatedBrand = await _brandService.UpdateBrandAsync(id, brandRequestDto);
+        if (updatedBrand == null)
         {
             return _responseHandler.NotFound("Brand not found.");
         }
@@ -64,15 +55,19 @@ public class BrandController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteBrand(int id)
     {
-        var result = await _unitOfWork.brandRepository.DeleteAsync(id);
-        _unitOfWork.Complete();
-        return _responseHandler.Success(result, "Brand deleted successfully.");
+        var brand = await _brandService.GetBrandByIdAsync(id);
+        if (brand is null)
+        {
+            return _responseHandler.NotFound("Brand not found.");
+        }
+        var result = await _brandService.DeleteBrandAsync(id);
+        return  _responseHandler.Success(result, "Brand deleted successfully.");
     }
 
     [HttpGet("{id}")]
     public async Task<IActionResult> GetBrandById(int id)
     {
-        var brand = await _unitOfWork.brandRepository.GetByID(id);
+        var brand = await _brandService.GetBrandByIdAsync(id);
         if (brand is null)
         {
             return _responseHandler.NotFound("Brand not found.");
@@ -84,7 +79,7 @@ public class BrandController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAllBrands()
     {
-        var brands = await _unitOfWork.brandRepository.GetAllAsync();
+        var brands = await _brandService.GetAllBrandsAsync();
         return _responseHandler.Success(brands, "Brands retrieved successfully.");
     }
 }

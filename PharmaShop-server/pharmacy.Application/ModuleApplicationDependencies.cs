@@ -3,6 +3,7 @@ using pharmacy.Application.Services;
 using pharmacy.Core.Contracts.IAuthService;
 using pharmacy.Core.Contracts.ILogger;
 using pharmacy.Core.Contracts.IServices;
+using pharmacy.Core.Services;
 using pharmacy.Infrastructure.Application.AuthService;
 using pharmacy.Infrastructure.Application.Logger;
 
@@ -16,6 +17,11 @@ public static class ModuleApplicationDependencies
         //  services.AddScoped<IUserManager,UserManager>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IBrandService, BrandService>();
+        services.AddScoped<IDiscountService, DiscountService>();
+        services.AddScoped<IProductService,ProductService>();
+
+
         return services;
     }
 }
