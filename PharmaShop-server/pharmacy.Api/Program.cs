@@ -1,4 +1,5 @@
 using pharmacy.Api.Extentions;
+using pharmacy.Application;
 using pharmacy.Infrastructure;
 
 namespace pharmacy.Api;
@@ -15,7 +16,9 @@ public class Program
 
         builder.Services.AddPresentationDependencies(builder.Configuration)
                         .AddInfrastructureDependencies()
-                        .AddSwaggerDocumentation().AddCloudinary(builder.Configuration).AddCorsPolicy();
+                        .AddSwaggerDocumentation()
+                        .AddCloudinary(builder.Configuration)
+                        .AddCorsPolicy().AddApplicationDependencies();
 
         var app = builder.Build();
 

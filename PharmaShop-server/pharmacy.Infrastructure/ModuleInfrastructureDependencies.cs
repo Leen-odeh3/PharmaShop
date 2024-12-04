@@ -6,8 +6,6 @@ using pharmacy.Core.Contracts;
 using pharmacy.Core.Contracts.IAuthService;
 using pharmacy.Core.Contracts.ILogger;
 using pharmacy.Core.Entities.Identity;
-using pharmacy.Infrastructure.Application.AuthService;
-using pharmacy.Infrastructure.Application.Logger;
 using pharmacy.Infrastructure.DbContext;
 using pharmacy.Infrastructure.Repositories;
 
@@ -37,10 +35,6 @@ public static class ModuleInfrastructureDependencies
         services.AddScoped<IOrderItemRepository,OrderItemRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
 
-        services.AddScoped<ILog, Log>();
-        services.AddScoped<IAuthService, AuthService>();
-      //  services.AddScoped<IUserManager,UserManager>();
-        services.AddScoped<ITokenService, TokenService>();
 
         services.AddIdentity<User, IdentityRole>()
           .AddEntityFrameworkStores<ApplicationDbContext>()
