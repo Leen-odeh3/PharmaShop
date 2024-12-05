@@ -2838,6 +2838,21 @@
           }
         }
       },
+      "pharmacy.Application/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v8.0",
+        "dependencies": {
+          "AutoMapper": "13.0.1",
+          "pharmacy.Core": "1.0.0",
+          "pharmacy.Infrastructure": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/pharmacy.Application.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/pharmacy.Application.dll": {}
+        }
+      },
       "pharmacy.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v8.0",
@@ -8057,6 +8072,11 @@
         "useSharedDesignerContext.txt"
       ]
     },
+    "pharmacy.Application/1.0.0": {
+      "type": "project",
+      "path": "../pharmacy.Application/pharmacy.Application.csproj",
+      "msbuildProject": "../pharmacy.Application/pharmacy.Application.csproj"
+    },
     "pharmacy.Core/1.0.0": {
       "type": "project",
       "path": "../pharmacy.Core/pharmacy.Core.csproj",
@@ -8075,8 +8095,8 @@
       "Microsoft.AspNetCore.Authentication.JwtBearer >= 8.0.11",
       "Microsoft.EntityFrameworkCore.Design >= 8.0.11",
       "Swashbuckle.AspNetCore >= 6.4.0",
-      "pharmacy.Core >= 1.0.0",
-      "pharmacy.Infrastructure >= 1.0.0"
+      "pharmacy.Application >= 1.0.0",
+      "pharmacy.Core >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -8112,11 +8132,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
+            "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Application\\pharmacy.Application.csproj": {
+              "projectPath": "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Application\\pharmacy.Application.csproj"
+            },
             "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Core\\pharmacy.Core.csproj": {
               "projectPath": "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Core\\pharmacy.Core.csproj"
-            },
-            "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Infrastructure\\pharmacy.Infrastructure.csproj": {
-              "projectPath": "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Infrastructure\\pharmacy.Infrastructure.csproj"
             }
           }
         }

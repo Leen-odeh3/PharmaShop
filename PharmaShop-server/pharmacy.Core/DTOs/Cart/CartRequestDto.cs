@@ -1,7 +1,7 @@
-﻿
-
+﻿using pharmacy.Core.DTOs.CartItem;
 namespace pharmacy.Core.DTOs.Cart;
 public class CartRequestDto
 {
-    public long CustomerId { get; set; }
+    public string CustomerId { get; set; }
+    public List<CartItemRequestDto> CartItems { get; set; }
 }

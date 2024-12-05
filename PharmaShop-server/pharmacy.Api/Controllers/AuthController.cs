@@ -48,7 +48,7 @@ public class AuthController : ControllerBase
         var authModel = await _authService.Login(loginDto);
         if (authModel.IsAuthenticated)
         {
-            return Ok(authModel);
+            return (ActionResult)_responseHandler.Success(authModel,"Login Success");
         }
         return (ActionResult)_responseHandler.Unauthorized(authModel.Message);
     }

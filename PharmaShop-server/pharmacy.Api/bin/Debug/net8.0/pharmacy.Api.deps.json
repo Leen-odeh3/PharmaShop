@@ -13,8 +13,8 @@
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.11",
           "Microsoft.EntityFrameworkCore.Design": "8.0.11",
           "Swashbuckle.AspNetCore": "6.4.0",
-          "pharmacy.Core": "1.0.0",
-          "pharmacy.Infrastructure": "1.0.0"
+          "pharmacy.Application": "1.0.0",
+          "pharmacy.Core": "1.0.0"
         },
         "runtime": {
           "pharmacy.Api.dll": {}
@@ -1547,6 +1547,16 @@
           }
         }
       },
+      "pharmacy.Application/1.0.0": {
+        "dependencies": {
+          "AutoMapper": "13.0.1",
+          "pharmacy.Core": "1.0.0",
+          "pharmacy.Infrastructure": "1.0.0"
+        },
+        "runtime": {
+          "pharmacy.Application.dll": {}
+        }
+      },
       "pharmacy.Core/1.0.0": {
         "dependencies": {
           "CloudinaryDotNet": "1.26.2",
@@ -2669,6 +2679,11 @@
       "sha512": "sha512-IXoJOXIqc39AIe+CIR7koBtRGMiCt/LPM3lI+PELtDIy9XdyeSrwXFdWV9dzJ2Awl0paLWUaknLxFQ5HpHZUog==",
       "path": "system.windows.extensions/6.0.0",
       "hashPath": "system.windows.extensions.6.0.0.nupkg.sha512"
+    },
+    "pharmacy.Application/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "pharmacy.Core/1.0.0": {
       "type": "project",

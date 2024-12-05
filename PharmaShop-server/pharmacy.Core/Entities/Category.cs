@@ -1,5 +1,4 @@
-﻿using System.Text.Json;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿
 using pharmacy.Core.Entities.Helpers;
 
 namespace pharmacy.Core.Entities;

@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using pharmacy.Api.Responses;
+﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Core.DTOs.Cart;
-using pharmacy.Core.Entities;
-using pharmacy.Core;
+using pharmacy.Core.Contracts.IServices;
+using pharmacy.Api.Responses;
 
 namespace pharmacy.Api.Controllers;
 
@@ -12,75 +9,46 @@ namespace pharmacy.Api.Controllers;
 [ApiController]
 public class CartController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly ICartService _cartService;
+    private readonly ICartItemService _cartItemService;
     private readonly IResponseHandler _responseHandler;
-    private readonly IMapper _mapper;
 
-    public CartController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper)
+    public CartController(ICartService cartService, ICartItemService cartItemService,IResponseHandler responseHandler)
     {
-        _unitOfWork = unitOfWork;
+        _cartService = cartService;
+        _cartItemService = cartItemService;
         _responseHandler = responseHandler;
-        _mapper = mapper;
-    }
-    [HttpGet]
-    public async Task<IActionResult> GetAllCarts()
-    {
-        var carts = await _unitOfWork.cartRepository.GetAllAsync();
-        return _responseHandler.Success(carts, "Carts retrieved successfully.");
     }
 
-        [HttpPost]
+    [HttpPost]
     public async Task<IActionResult> AddCart([FromBody] CartRequestDto cartRequestDto)
     {
-        if (cartRequestDto == null)
-        {
-            return _responseHandler.BadRequest("Invalid cart data.");
-        }
-
-        var cart = _mapper.Map<Cart>(cartRequestDto);
-        var cartResponseDto = await _unitOfWork.cartRepository.CreateAsync(cart);
-        _unitOfWork.Complete();
-        return _responseHandler.Created(cartResponseDto, "Cart created successfully.");
-    }
+        var result = await _cartService.AddCartAsync(cartRequestDto);
+        return _responseHandler.Created(result,"added success");
+            }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetCartById(int id)
+    public async Task<IActionResult> GetCart(int id)
     {
-        var cart = await _unitOfWork.cartRepository.GetByID(id);
-        if (cart is null)
-        {
-            return _responseHandler.NotFound("Cart not found.");
-        }
-
-        return _responseHandler.Success(cart, "Cart retrieved successfully.");
+        var result = await _cartService.GetCartByIdAsync(id);
+        if (result is null)
+            return _responseHandler.NotFound("Cart null");
+        return _responseHandler.Success(result, "Get Cart success");
     }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCart(int id, [FromBody] CartRequestDto cartRequestDto)
     {
-        if (cartRequestDto == null)
-        {
-            return _responseHandler.BadRequest("Invalid cart data.");
-        }
-
-        var cart = _mapper.Map<Cart>(cartRequestDto);
-
-        var updatedCart = await _unitOfWork.cartRepository.UpdateAsync(id, cart);
-        _unitOfWork.Complete();
-
-        if (updatedCart == null)
-        {
-            return _responseHandler.NotFound("Cart not found.");
-        }
-
-        return _responseHandler.Success(updatedCart, "Cart updated successfully.");
+        var result = await _cartService.UpdateCartAsync(id, cartRequestDto);
+        if (result is null)
+            return _responseHandler.NotFound("Cart null");
+        return _responseHandler.Success(result, "Updated success");
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCart(int id)
     {
-        var result = await _unitOfWork.cartRepository.DeleteAsync(id);
-        _unitOfWork.Complete();
-        return _responseHandler.Success(result, "Cart deleted successfully.");
+        await _cartService.DeleteCartAsync(id);
+        return _responseHandler.NoContent("Deleted success");
     }
 }

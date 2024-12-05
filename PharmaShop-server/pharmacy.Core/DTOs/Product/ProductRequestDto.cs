@@ -1,5 +1,4 @@
 ﻿using pharmacy.Core.Entities;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pharmacy.Core.DTOs.Product;
 public class ProductRequestDto

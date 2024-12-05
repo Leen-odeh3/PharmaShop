@@ -1,41 +1,33 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
-using pharmacy.Core;
+using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Discount;
-using pharmacy.Core.Entities;
 namespace pharmacy.Api.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
 public class DiscountController : ControllerBase
 {
-    private readonly IUnitOfWork _unitOfWork;
+    private readonly IDiscountService _discountService;
     private readonly IResponseHandler _responseHandler;
-    private readonly IMapper _mapper; 
 
-    public DiscountController(IUnitOfWork unitOfWork, IResponseHandler responseHandler, IMapper mapper)
+    public DiscountController(IDiscountService discountService, IResponseHandler responseHandler)
     {
-        _unitOfWork = unitOfWork;
+        _discountService = discountService;
         _responseHandler = responseHandler;
-        _mapper = mapper; 
     }
 
-    [HttpPost]
+    [HttpPost("addDiscount")]
     public async Task<IActionResult> CreateDiscountAsync([FromBody] DiscountRequestDto discountRequestDto)
     {
         try
         {
-            if (discountRequestDto == null)
+            if (discountRequestDto is null)
             {
                 return _responseHandler.BadRequest("Invalid discount data.");
             }
 
-            var discount = _mapper.Map<Discount>(discountRequestDto);
-
-            var createdDiscount = await _unitOfWork.discountRepository.CreateAsync(discount);
-            _unitOfWork.Complete();
-
+            var createdDiscount = await _discountService.CreateDiscountAsync(discountRequestDto);
             return _responseHandler.Created(createdDiscount, "Discount created successfully.");
         }
         catch (Exception ex)
@@ -49,34 +41,32 @@ public class DiscountController : ControllerBase
     {
         try
         {
-            var discount = await _unitOfWork.discountRepository.GetByID(id);
+            var discount = await _discountService.GetDiscountByIdAsync(id);
 
             if (discount == null)
                 return _responseHandler.NotFound($"Discount with ID {id} not found.");
-            var discountResponseDto = _mapper.Map<DiscountResponseDto>(discount);
 
-            return _responseHandler.Success(discountResponseDto, "Discount details fetched successfully.");
+            return _responseHandler.Success(discount, "Discount details fetched successfully.");
         }
         catch (Exception ex)
         {
             return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
         }
     }
+
     [HttpGet]
     public async Task<IActionResult> GetAllDiscountsAsync()
     {
         try
         {
-            var discounts = await _unitOfWork.discountRepository.GetAllAsync();
+            var discounts = await _discountService.GetAllDiscountsAsync();
 
-            if (discounts == null || !discounts.Any())
+            if (discounts is null || !discounts.Any())
             {
                 return _responseHandler.NotFound("No discounts found.");
             }
 
-            var discountResponseDtos = _mapper.Map<IEnumerable<DiscountResponseDto>>(discounts);
-
-            return _responseHandler.Success(discountResponseDtos, "Discounts fetched successfully.");
+            return _responseHandler.Success(discounts, "Discounts fetched successfully.");
         }
         catch (Exception ex)
         {
@@ -89,14 +79,12 @@ public class DiscountController : ControllerBase
     {
         try
         {
-            var existingDiscount = await _unitOfWork.discountRepository.GetByID(id);
+            var updatedDiscount = await _discountService.UpdateDiscountAsync(id, discountRequestDto);
 
-            var updatedDiscount = _mapper.Map(discountRequestDto, existingDiscount);
+            if (updatedDiscount is null)
+                return _responseHandler.NotFound($"Discount with ID {id} not found.");
 
-            var result = await _unitOfWork.discountRepository.UpdateAsync(id, updatedDiscount);
-            _unitOfWork.Complete();
-
-            return _responseHandler.Success(result, "Discount updated successfully.");
+            return _responseHandler.Success(updatedDiscount, "Discount updated successfully.");
         }
         catch (Exception ex)
         {
@@ -109,24 +97,13 @@ public class DiscountController : ControllerBase
     {
         try
         {
-            var existingDiscount = await _unitOfWork.discountRepository.GetByID(id);
+            var result = await _discountService.DeleteDiscountAsync(id);
 
-            if (existingDiscount == null)
-            {
-                return _responseHandler.NotFound($"Discount with ID {id} not found.");
-            }
-
-            var deleted = await _unitOfWork.discountRepository.DeleteAsync(id);
-            _unitOfWork.Complete();
-
-            return _responseHandler.NoContent("Discount deleted successfully.");
+            return _responseHandler.Success("Discount deleted successfully.",result);
         }
         catch (Exception ex)
         {
             return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
         }
     }
-
-
-
 }

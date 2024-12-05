@@ -3,6 +3,7 @@ const Product = () => {
   return (
     <div className="admin-container">
     <AdminSidebar />
+    
     </div>
   )
 }

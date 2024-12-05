@@ -1,4 +1,5 @@
-﻿using pharmacy.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities;
 using pharmacy.Infrastructure.DbContext;
 
@@ -8,5 +9,10 @@ public class PaymentMethodRepository: GenericRepository<PaymentMethod>, IPayment
     public PaymentMethodRepository(ApplicationDbContext context):base(context)
     {
         
+    }
+    public async Task<PaymentMethod> GetPaymentMethodByOrderIdAsync(int orderId)
+    {
+        return await _context.PaymentMethods
+       .FirstOrDefaultAsync(pm => pm.OrderId == orderId);
     }
 }

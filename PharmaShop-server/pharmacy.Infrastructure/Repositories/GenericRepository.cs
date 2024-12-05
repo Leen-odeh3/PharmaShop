@@ -5,7 +5,6 @@ namespace pharmacy.Infrastructure.Repositories;
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
     public readonly ApplicationDbContext _context;
-
     public GenericRepository(ApplicationDbContext context)
     {
         _context = context;

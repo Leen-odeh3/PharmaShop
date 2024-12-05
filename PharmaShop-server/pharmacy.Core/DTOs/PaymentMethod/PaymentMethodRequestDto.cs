@@ -1,5 +1,4 @@
-﻿
-namespace pharmacy.Core.DTOs.PaymentMethod;
+﻿namespace pharmacy.Core.DTOs;
 public class PaymentMethodRequestDto
 {
     public string Provider { get; set; }
@@ -8,4 +7,6 @@ public class PaymentMethodRequestDto
     public short ExpiryYear { get; set; }
     public string SecurityCode { get; set; }
     public decimal TotalAmount { get; set; }
+    public int OrderId { get; set; }
+    public int PaymentTypeId { get; set; }
 }
