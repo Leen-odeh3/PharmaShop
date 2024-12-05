@@ -1,4 +1,6 @@
-﻿using pharmacy.Core.Contracts;
+﻿using Microsoft.EntityFrameworkCore;
+using pharmacy.Core.Contracts;
+using pharmacy.Core.DTOs.Review;
 using pharmacy.Core.Entities;
 using pharmacy.Infrastructure.DbContext;
 
@@ -9,4 +11,12 @@ public class ReviewRepository:GenericRepository<Review> ,IReviewRepository
     {
         
     }
+    public async Task<IEnumerable<ReviewResponseDto>> GetAllAsync()
+    {
+        return (IEnumerable<ReviewResponseDto>)await _context.Reviews
+            .Include(c => c.Customer)
+            .Include(p => p.Product)
+            .ToListAsync();
+    }
+
 }

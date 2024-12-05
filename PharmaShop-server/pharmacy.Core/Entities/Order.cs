@@ -13,7 +13,7 @@ public class Order
     public decimal totalPrice { get; set; }
     public OrderStatus OrderStatus { get; set; }
     public DateTime CreatedDate { get; set; }
-    public long CustomerId { get; set; }
+    public string CustomerId { get; set; }
     public Customer Customer { get; set; }
     public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     public ICollection<PaymentMethod> PaymentMethods { get; set; } = new List<PaymentMethod>();

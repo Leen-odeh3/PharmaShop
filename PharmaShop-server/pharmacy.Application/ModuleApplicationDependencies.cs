@@ -20,6 +20,10 @@ public static class ModuleApplicationDependencies
         services.AddScoped<IBrandService, BrandService>();
         services.AddScoped<IDiscountService, DiscountService>();
         services.AddScoped<IProductService,ProductService>();
+        services.AddScoped<IReviewService, ReviewService>();  
+        services.AddScoped<PaymentMethodService, PaymentMethodService>();
+        services.AddScoped<CartService, CartService>();
+        services.AddScoped<CartItemService, CartItemService>();
 
 
         return services;

@@ -34,6 +34,7 @@ public static class ModuleInfrastructureDependencies
         services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<IOrderItemRepository,OrderItemRepository>();
         services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<ICartItemRepository, CartItemRepository>();
 
 
         services.AddIdentity<User, IdentityRole>()

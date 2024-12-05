@@ -12,8 +12,8 @@ using pharmacy.Infrastructure.DbContext;
 namespace pharmacy.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241203162732_CreateMoreEntities")]
-    partial class CreateMoreEntities
+    [Migration("20241205104406_createDb")]
+    partial class createDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -183,53 +183,54 @@ namespace pharmacy.Infrastructure.Migrations
 
             modelBuilder.Entity("pharmacy.Core.Entities.Cart", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("CartId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("AddedDate")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("CustomerId1")
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.HasIndex("CustomerId1");
+                    b.HasKey("CartId");
+
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.CartItem", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("CartItemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
 
-                    b.Property<long>("CartId")
-                        .HasColumnType("bigint");
+                    b.Property<int>("CartId")
+                        .HasColumnType("int");
 
-                    b.Property<long>("PriceAtTime")
-                        .HasColumnType("bigint");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ProductId1")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("CartItemId");
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
                 });
@@ -404,10 +405,8 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CustomerId1")
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("OrderNumber")
@@ -429,7 +428,7 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.HasKey("OrderId");
 
-                    b.HasIndex("CustomerId1");
+                    b.HasIndex("CustomerId");
 
                     b.ToTable("orders");
                 });
@@ -448,10 +447,7 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ProductId1")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -461,18 +457,18 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("ordersItem");
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.PaymentMethod", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AccountNumber")
                         .IsRequired()
@@ -500,6 +496,9 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -563,11 +562,11 @@ namespace pharmacy.Infrastructure.Migrations
 
             modelBuilder.Entity("pharmacy.Core.Entities.Review", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
+                        .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -576,26 +575,21 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
-                    b.Property<string>("CustomerId1")
+                    b.Property<string>("CustomerId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("ProductId1")
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ReviewId");
 
-                    b.HasIndex("CustomerId1");
+                    b.HasIndex("CustomerId");
 
-                    b.HasIndex("ProductId1");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Reviews");
                 });
@@ -614,6 +608,9 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<long>("PaymentMethodId")
                         .HasColumnType("bigint");
 
+                    b.Property<int>("PaymentMethodId1")
+                        .HasColumnType("int");
+
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -622,7 +619,7 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PaymentMethodId");
+                    b.HasIndex("PaymentMethodId1");
 
                     b.ToTable("Transactions");
                 });
@@ -711,7 +708,9 @@ namespace pharmacy.Infrastructure.Migrations
                 {
                     b.HasOne("pharmacy.Core.Entities.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -726,7 +725,7 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.HasOne("pharmacy.Core.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId1")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -776,7 +775,9 @@ namespace pharmacy.Infrastructure.Migrations
                 {
                     b.HasOne("pharmacy.Core.Entities.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
                 });
@@ -791,7 +792,7 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.HasOne("pharmacy.Core.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId1")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -842,11 +843,13 @@ namespace pharmacy.Infrastructure.Migrations
                 {
                     b.HasOne("pharmacy.Core.Entities.Customer", "Customer")
                         .WithMany()
-                        .HasForeignKey("CustomerId1");
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("pharmacy.Core.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ProductId1")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -859,7 +862,7 @@ namespace pharmacy.Infrastructure.Migrations
                 {
                     b.HasOne("pharmacy.Core.Entities.PaymentMethod", "PaymentMethod")
                         .WithMany()
-                        .HasForeignKey("PaymentMethodId")
+                        .HasForeignKey("PaymentMethodId1")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
