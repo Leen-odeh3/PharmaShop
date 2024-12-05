@@ -5,7 +5,6 @@ namespace pharmacy.Core.Entities;
 public class Order
 {
     public int OrderId { get; set; }
-    public int OrderNumber { get; set; }
     public string Country { get; set; }
     public string City { get; set; }
     public string Street { get; set; }
