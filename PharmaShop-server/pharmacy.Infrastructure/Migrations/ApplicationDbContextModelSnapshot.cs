@@ -214,9 +214,6 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<int>("CartId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -405,9 +402,6 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<string>("CustomerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("OrderNumber")
-                        .HasColumnType("int");
 
                     b.Property<int>("OrderStatus")
                         .HasColumnType("int");

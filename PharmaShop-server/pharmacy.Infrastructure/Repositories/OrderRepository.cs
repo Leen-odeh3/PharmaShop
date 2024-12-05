@@ -11,19 +11,18 @@ public class OrderRepository :GenericRepository<Order> ,IOrderRepository
     {
         
     }
-    public async Task<Order> GetOrderWithDetailsAsync(int orderId)
+    public async Task<Order> GetByIdAsync(int id)
     {
         return await _context.orders
-                             .Include(o => o.OrderItems)
-                             .ThenInclude(oi => oi.Product)  
-                             .FirstOrDefaultAsync(o => o.OrderId == orderId);
+            .Include(o => o.OrderItems)
+            .ThenInclude(oi => oi.Product)
+            .FirstOrDefaultAsync(o => o.OrderId == id);
     }
 
-    public async Task<decimal> CalculateOrderTotalAmount(int orderId)
+    public async Task<IEnumerable<Order>> GetAllAsync()
     {
-        var order = await GetOrderWithDetailsAsync(orderId);
-        if (order is null) return 0;
-
-        return order.OrderItems.Sum(item => item.Quantity * item.Price);
+        return await _context.orders
+            .Include(o => o.OrderItems)
+            .ToListAsync();
     }
 }
