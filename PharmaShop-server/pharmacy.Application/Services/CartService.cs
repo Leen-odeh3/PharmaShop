@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
-using pharmacy.Core.Contracts.IServices;
+using pharmacy.Core;
 using pharmacy.Core.Contracts;
+using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Cart;
 using pharmacy.Core.Entities;
-using pharmacy.Core;
+
 namespace pharmacy.Application.Services;
 public class CartService : ICartService
 {
@@ -18,8 +19,15 @@ public class CartService : ICartService
 
     public async Task<CartResponseDto> AddCartAsync(CartRequestDto cartRequestDto)
     {
+        var existingCart = await _unitOfWork.cartRepository.GetCartByCustomerIdAsync(cartRequestDto.CustomerId);
+        if (existingCart != null)
+        {
+            return null; 
+        }
+
         var cart = _mapper.Map<Cart>(cartRequestDto);
         cart.AddedDate = DateTime.Now;
+
         var addedCart = await _unitOfWork.cartRepository.CreateAsync(cart);
         _unitOfWork.Complete();
         return _mapper.Map<CartResponseDto>(addedCart);
@@ -31,7 +39,7 @@ public class CartService : ICartService
         if (cart == null) return null;
 
         _mapper.Map(cartRequestDto, cart);
-        var updatedCart = await _unitOfWork.cartRepository.UpdateAsync(id,cart);
+        var updatedCart = await _unitOfWork.cartRepository.UpdateAsync(id, cart);
         _unitOfWork.Complete();
         return _mapper.Map<CartResponseDto>(updatedCart);
     }

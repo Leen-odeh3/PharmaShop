@@ -24,6 +24,8 @@ public static class ModuleApplicationDependencies
         services.AddScoped<PaymentMethodService, PaymentMethodService>();
         services.AddScoped<ICartService, CartService>();
         services.AddScoped<ICartItemService, CartItemService>();
+        services.AddScoped<IOrderService, OrderService>();
+        services.AddScoped<IOrderItemService,OrderItemService>();   
 
 
         return services;

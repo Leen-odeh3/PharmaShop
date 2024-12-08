@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
+using pharmacy.Core;
 using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Review;
 using pharmacy.Core.Entities;
-using pharmacy.Core;
 
 namespace pharmacy.Application.Services;
 public class ReviewService : IReviewService

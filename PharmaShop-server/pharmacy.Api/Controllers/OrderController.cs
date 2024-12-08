@@ -10,9 +10,9 @@ namespace pharmacy.API.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly ResponseHandler _responseHandler;
+        private readonly IResponseHandler _responseHandler;
 
-        public OrderController(IOrderService orderService, ResponseHandler responseHandler)
+        public OrderController(IOrderService orderService, IResponseHandler responseHandler)
         {
             _orderService = orderService;
             _responseHandler = responseHandler;

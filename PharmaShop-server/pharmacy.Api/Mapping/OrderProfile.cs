@@ -11,6 +11,6 @@ public class OrderProfile :Profile
             .ForMember(dest => dest.OrderItems, opt => opt.MapFrom(src => src.OrderItems));
         CreateMap<Order, OrderResponseDto>();
         CreateMap<OrderRequestDto, OrderItem>();
-        CreateMap<OrderItem, OrderResponseDto>();
+        CreateMap<OrderItemRequestDto, OrderItem>();
     }
 }

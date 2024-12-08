@@ -18,11 +18,12 @@ public class OrderRepository :GenericRepository<Order> ,IOrderRepository
             .ThenInclude(oi => oi.Product)
             .FirstOrDefaultAsync(o => o.OrderId == id);
     }
-
-    public async Task<IEnumerable<Order>> GetAllAsync()
+    public async Task<IEnumerable<Order>> GetOrdersByCustomerIdAsync(string customerId)
     {
         return await _context.orders
-            .Include(o => o.OrderItems)
-            .ToListAsync();
+                             .Include(o => o.OrderItems)
+                             .ThenInclude(oi => oi.Product)
+                             .Where(o => o.CustomerId == customerId)
+                             .ToListAsync();
     }
 }
