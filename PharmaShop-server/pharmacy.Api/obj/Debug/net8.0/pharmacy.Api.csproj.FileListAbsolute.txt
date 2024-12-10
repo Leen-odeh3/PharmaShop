@@ -158,3 +158,6 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\N
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\obj\Debug\net8.0\pharmacy.Api.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Application.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Application.pdb
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\FluentValidation.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll

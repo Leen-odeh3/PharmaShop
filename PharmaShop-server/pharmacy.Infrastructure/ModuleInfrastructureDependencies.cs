@@ -8,6 +8,7 @@ using pharmacy.Core.Contracts.ILogger;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Infrastructure.DbContext;
 using pharmacy.Infrastructure.Repositories;
+using System;
 
 namespace pharmacy.Infrastructure;
 public static class ModuleInfrastructureDependencies

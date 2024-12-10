@@ -1,13 +1,16 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
+using pharmacy.Api.Validation;
 using pharmacy.Core;
 using pharmacy.Core.Contracts;
+using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.Entities.Helpers;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.DbContext;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -48,6 +51,12 @@ public static class ModulePresentationDependencies
 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IResponseHandler, ResponseHandler>();
+
+        services.AddControllers()
+                .AddFluentValidation(config =>
+    {
+        config.RegisterValidatorsFromAssemblyContaining<RegisterValidation>();
+    });
 
         return services;
     }
