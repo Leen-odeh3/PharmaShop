@@ -1,13 +1,13 @@
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\bin\Debug\net8.0\pharmacy.Core.deps.json
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\bin\Debug\net8.0\pharmacy.Core.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\bin\Debug\net8.0\pharmacy.Core.pdb
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.csproj.AssemblyReference.cache
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.AssemblyInfoInputs.cache
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.AssemblyInfo.cs
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.csproj.CoreCompileInputs.cache
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.sourcelink.json
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\bin\Debug\net8.0\pharmacy.Core.deps.json
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\bin\Debug\net8.0\pharmacy.Core.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\bin\Debug\net8.0\pharmacy.Core.pdb
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\refint\pharmacy.Core.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.pdb
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\ref\pharmacy.Core.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Core\obj\Debug\net8.0\pharmacy.Core.csproj.AssemblyReference.cache

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "p6bVFgUD8yTSe2EZPTGnKW8ERJogAmxQS/tVO98D7NJ2qQVFtgtVAvwFMFKj0GjtFCPGOsCU2mG5WWTypk8VPw==",
+  "dgSpecHash": "cQUyHds5XBGObd68Lqf2O3n3WwA5idTVZetYOMi9SKEBpsdoN71XWomx3fZ19g++XkmIQoOj5ZozYoklelpV8g==",
   "success": true,
   "projectFilePath": "C:\\Users\\hp\\Desktop\\PharmaShop\\PharmaShop-server\\pharmacy.Infrastructure\\pharmacy.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -8,6 +8,8 @@
     "C:\\Users\\hp\\.nuget\\packages\\azure.identity\\1.11.4\\azure.identity.1.11.4.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\cloudinarydotnet\\1.26.2\\cloudinarydotnet.1.26.2.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\hp\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.authentication\\2.2.0\\microsoft.aspnetcore.authentication.2.2.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.authentication.abstractions\\2.2.0\\microsoft.aspnetcore.authentication.abstractions.2.2.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\microsoft.aspnetcore.authentication.cookies\\2.2.0\\microsoft.aspnetcore.authentication.cookies.2.2.0.nupkg.sha512",

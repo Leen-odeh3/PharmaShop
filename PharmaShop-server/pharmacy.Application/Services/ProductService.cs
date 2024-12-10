@@ -21,7 +21,7 @@ public class ProductService : IProductService
     public async Task<ProductResponseDto> AddProductAsync(ProductRequestDto productDto, List<IFormFile> images)
     {
         var uploadResults = await _photoService.UploadImagesAsync(images);
-        if (uploadResults == null || uploadResults.Count == 0)
+        if (uploadResults is null || uploadResults.Count == 0)
             throw new Exception("Failed to upload images.");
 
         var imageUrls = new List<string>();
@@ -34,11 +34,10 @@ public class ProductService : IProductService
         }
 
         var product = _mapper.Map<Product>(productDto);
-        /*product.ImageUrls = imageUrls;
+        product.ImageUrls = imageUrls;
         product.ImagePublicIds = imagePublicIds;
         product.ImageUrlsJson = imageUrls.Count > 0 ? System.Text.Json.JsonSerializer.Serialize(imageUrls) : "[]";
         product.ImagePublicIdsJson = imagePublicIds.Count > 0 ? System.Text.Json.JsonSerializer.Serialize(imagePublicIds) : "[]";
-        */
 
         await _unitOfWork.productRepository.CreateAsync(product);
         _unitOfWork.Complete();

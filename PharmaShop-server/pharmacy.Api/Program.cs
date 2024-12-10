@@ -1,4 +1,5 @@
 using pharmacy.Api.Extentions;
+using pharmacy.Api.Mapping;
 using pharmacy.Application;
 using pharmacy.Infrastructure;
 namespace pharmacy.Api;
@@ -19,6 +20,7 @@ public class Program
                         .AddCloudinary(builder.Configuration)
                         .AddCorsPolicy().AddApplicationDependencies();
 
+        MapsterConfig.Configure();
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())

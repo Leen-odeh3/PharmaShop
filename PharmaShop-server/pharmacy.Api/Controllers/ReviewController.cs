@@ -53,7 +53,7 @@ public class ReviewController : ControllerBase
     public async Task<IActionResult> GetReviewById(int id)
     {
         var review = await _reviewService.GetReviewByIdAsync(id);
-        if (review == null)
+        if (review is null)
         {
             return _responseHandler.NotFound("Review not found.");
         }
