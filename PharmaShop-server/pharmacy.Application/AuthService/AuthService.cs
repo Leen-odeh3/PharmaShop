@@ -1,15 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using pharmacy.Core.Contracts.IAuthService;
 using pharmacy.Core.DTOs.Admin;
 using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.DTOs.Pharmacist;
 using pharmacy.Core.DTOs.Login;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Core.Enums;
-using pharmacy.Core.Contracts.ILogger;
 using System.IdentityModel.Tokens.Jwt;
 using pharmacy.Core.Entities;
 using pharmacy.Core.DTOs.shared;
+using pharmacy.Core.ILogger;
+using pharmacy.Core.IAuthService;
 
 namespace pharmacy.Infrastructure.Application.AuthService;
 

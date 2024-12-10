@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
 using pharmacy.Core;
 using pharmacy.Core.Contracts;
-using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Brand;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Api.Controllers;
 

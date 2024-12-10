@@ -1,7 +1,6 @@
 using pharmacy.Api.Extentions;
 using pharmacy.Application;
 using pharmacy.Infrastructure;
-
 namespace pharmacy.Api;
 public class Program
 {

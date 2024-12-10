@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
 
 namespace pharmacy.Infrastructure.Repositories;
@@ -45,7 +45,7 @@ public class DiscountRepository : GenericRepository<Discount> , IDiscountReposit
         if (discount == null)  return 0;
 
         var product = await _context.products
-                                     .Where(p => p.Discount.DiscountId == id)  
+                                     .Where(p => p.Discount.Id == id)  
                                      .FirstOrDefaultAsync();
 
         if (product is null)

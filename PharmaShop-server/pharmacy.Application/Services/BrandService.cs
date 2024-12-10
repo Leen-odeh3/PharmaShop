@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Brand;
 using pharmacy.Core.Entities;
 using pharmacy.Core;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Application.Services;
 public class BrandService : IBrandService
@@ -27,7 +27,7 @@ public class BrandService : IBrandService
     public async Task<BrandGetResponse> UpdateBrandAsync(int id, BrandRequestDto brandRequestDto)
     {
         var brand = _mapper.Map<Brand>(brandRequestDto);
-        brand.BrandId = id;
+        brand.Id = id;
 
         var updatedBrand = await _unitOfWork.brandRepository.UpdateAsync(id, brand);
         if (updatedBrand == null)

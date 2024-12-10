@@ -1,8 +1,8 @@
-﻿using pharmacy.Core.Enums;
+﻿using pharmacy.Core.Entities.OrderAggregate;
+using pharmacy.Core.Enums;
 namespace pharmacy.Core.Entities;
-public class PaymentMethod
+public class PaymentMethod:BaseEntity
 {
-    public int Id { get; set; }
     public string Provider { get; set; }
     public string AccountNumber { get; set; }
     public byte ExpiryMonth { get; set; }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
-using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Product;
+using pharmacy.Core.Services.Contract;
 
 [Route("api/[controller]")]
 [ApiController]

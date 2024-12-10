@@ -48,7 +48,6 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\M
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Microsoft.OpenApi.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Microsoft.SqlServer.Server.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Microsoft.Win32.SystemEvents.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Mono.TextTemplating.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Swashbuckle.AspNetCore.SwaggerGen.dll
@@ -61,14 +60,12 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\S
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Composition.Runtime.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Composition.TypedParts.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Configuration.ConfigurationManager.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Drawing.Common.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Formats.Asn1.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Memory.Data.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Runtime.Caching.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Security.Permissions.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\System.Windows.Extensions.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\cs\Microsoft.CodeAnalysis.resources.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\de\Microsoft.CodeAnalysis.resources.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\es\Microsoft.CodeAnalysis.resources.dll
@@ -127,12 +124,7 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\r
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win-arm64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win-x64\native\Microsoft.Data.SqlClient.SNI.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win\lib\net6.0\Microsoft.Win32.SystemEvents.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\unix\lib\net6.0\System.Drawing.Common.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
-C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Core.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Infrastructure.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\pharmacy.Core.pdb
@@ -161,3 +153,6 @@ C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\p
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\FluentValidation.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Users\hp\Desktop\PharmaShop\PharmaShop-server\pharmacy.Api\bin\Debug\net8.0\Stripe.net.dll

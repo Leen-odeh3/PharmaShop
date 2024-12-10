@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using pharmacy.Core.Entities;
 using pharmacy.Core.Entities.Identity;
+using pharmacy.Core.Entities.OrderAggregate;
 
 namespace pharmacy.Infrastructure.DbContext;
 public class ApplicationDbContext : IdentityDbContext<User>
@@ -18,11 +19,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Admin> admins { get; set; }
     public DbSet<Pharmacist> pharmacists { get; set; }
     public DbSet<Discount> discounts { get; set; }
-    public DbSet<Order> orders { get; set; }
-    public DbSet<OrderItem> ordersItem { get; set; }
     public DbSet<Review> Reviews { get; set; }
-    public DbSet<Cart> Carts { get; set; }
-    public DbSet<CartItem> CartItems { get; set; }
-    public DbSet<PaymentMethod> PaymentMethods { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
+    public DbSet<DeliveryMethod> DeliveryMethods { get; set; }
+    public DbSet<WishlistItem> WishlistItems { get; set; }
 }

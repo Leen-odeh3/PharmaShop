@@ -4,12 +4,14 @@ using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
 using pharmacy.Api.Validation;
 using pharmacy.Core;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.Entities.Helpers;
 using pharmacy.Core.Entities.Identity;
+using pharmacy.Core.Services.Contract;
 using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.DbContext;
+using StackExchange.Redis;
+using Stripe;
 using System;
 using System.Reflection;
 using System.Text;
@@ -43,6 +45,12 @@ public static class ModulePresentationDependencies
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
         });*/
+
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var configuration = ConfigurationOptions.Parse("localhost:5068", true);
+            return ConnectionMultiplexer.Connect(configuration);
+        });
 
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 

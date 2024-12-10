@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace pharmacy.Core.Entities;
 public class Product : BaseEntity
 {
-    public int ProductId { get; set; }
     public string ProductName { get; set; }
     public string ProductDescription { get; set; }
     public int Price { get; set; }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pharmacy.Core.Contracts;
+using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
+using pharmacy.Core.Specifications;
 using pharmacy.Infrastructure.DbContext;
 namespace pharmacy.Infrastructure.Repositories;
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 {
     public readonly ApplicationDbContext _context;
     public GenericRepository(ApplicationDbContext context)
@@ -46,4 +48,27 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
         return existingEntity;
     }
+
+
+
+    public async Task<IReadOnlyList<T>> GetAllAsyncWithSpec(ISpecifications<T> specifications)
+    {
+        return await GenerateQuaryAsync(specifications).AsNoTracking().ToListAsync();
+    }
+
+    public async Task<T?> GetByIdAsyncWithSpec(ISpecifications<T> specifications)
+    {
+        return await GenerateQuaryAsync(specifications).FirstOrDefaultAsync();
+    }
+
+    private IQueryable<T> GenerateQuaryAsync(ISpecifications<T> specifications)
+    {
+        return SpecificationEvaluator<T>.GetQuary(_context.Set<T>(), specifications);
+    }
+
+    public async Task<int> GetCountAsync(ISpecifications<T> specifications)
+    {
+        return await GenerateQuaryAsync(specifications).CountAsync();
+    }
+
 }

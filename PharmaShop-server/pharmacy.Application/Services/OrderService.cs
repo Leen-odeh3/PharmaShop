@@ -1,73 +1,88 @@
-﻿using AutoMapper;
-using pharmacy.Core.Contracts.IServices;
-using pharmacy.Core.DTOs.Order;
+﻿
 using pharmacy.Core;
+using pharmacy.Core.Entities.OrderAggregate;
+using pharmacy.Core.Services.Contract;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Specifications.OrderSpecifications;
+using pharmacy.Core.Repositories.Contract;
 
 public class OrderService : IOrderService
 {
+    private readonly IBasketRepository _basketRepo;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-
-    public OrderService(IUnitOfWork unitOfWork, IMapper mapper)
+    private readonly IPaymentService _paymentServices;
+    public OrderService(
+        IBasketRepository basketRepo,
+        IUnitOfWork unitOfWork,
+        IPaymentService paymentServices)
     {
+        _basketRepo = basketRepo;
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
-    public async Task<OrderResponseDto> CreateAsync(OrderRequestDto request)
-    {
-        var order = _mapper.Map<Order>(request);
-
-        await _unitOfWork.orderRepository.CreateAsync(order);
-
-        _unitOfWork.Complete();
-
-        return _mapper.Map<OrderResponseDto>(order);
+        _paymentServices = paymentServices;
     }
 
-
-    public async Task<OrderResponseDto> GetByIdAsync(int id)
+    public async Task<Order?> CreateOrderAsync(string buyeremail, int deliverymthodid, string basketid, Address address)
     {
-        var order = await _unitOfWork.orderRepository.GetByID(id);
-        if (order == null)
+        var basket = await _basketRepo.GetBasketAsync(basketid);
+        if (basket is not null)
         {
-            throw new Exception("Order not found");
+            var OrderItems = new List<OrderItem>();
+
+            if (basket?.Items?.Count > 0)
+            {
+                var productrepo = _unitOfWork.productRepository;
+                foreach (var item in basket.Items)
+                {
+                    var product = await productrepo.GetByID(item.Id);
+
+                    var productitemorder = new ProductItemOrdered(product.Id, product.ProductName);
+
+                    var Orderitem = new OrderItem(productitemorder, item.Quantity, product.Price);
+
+                    OrderItems.Add(Orderitem);
+                }
+            }
+
+            var subtotal = OrderItems.Sum(O => O.Quantity * O.Price);
+
+            var deliverymethod = await _unitOfWork.DeliveryMethodRepo.GetByID(deliverymthodid);
+
+            var _orderrepo = _unitOfWork.orderRepository;
+
+            var result = await _orderrepo.GetByIdAsyncWithSpec(new OrderSpecificationsToGetOrderByPaymentintentId(basket.PaymentIntentId));
+
+            if (result is not null)
+            {
+                _orderrepo.DeleteAsync(result.Id);
+
+                await _paymentServices.CreateOrUpdatePaymentIntentAsync(basket.Id);
+
+            }
+
+
+            var order = new Order(buyeremail, address, deliverymethod.Id , OrderItems, subtotal, basket.PaymentIntentId);
+
+            await _orderrepo.CreateAsync(order);
+
+            var roweffect = _unitOfWork.Complete();
+            if (roweffect <= 0)
+                return null;
+
+            return order;
         }
-        return _mapper.Map<OrderResponseDto>(order);
-    }
-
-    public async Task<IEnumerable<OrderResponseDto>> GetAllAsync()
-    {
-        var orders = await _unitOfWork.orderRepository.GetAllAsync();
-        return _mapper.Map<IEnumerable<OrderResponseDto>>(orders);
-    }
-
-
-    public async Task<OrderResponseDto> UpdateAsync(int id, OrderRequestDto request)
-    {
-        var existingOrder = await _unitOfWork.orderRepository.GetByID(id);
-        if (existingOrder == null)
+        else
         {
-            throw new Exception("Order not found");
+            return null;
         }
-
-        _mapper.Map(request, existingOrder);
-        await _unitOfWork.orderRepository.UpdateAsync(id, existingOrder);
-        _unitOfWork.Complete();
-
-        return _mapper.Map<OrderResponseDto>(existingOrder);
     }
-
-    public async Task<string> DeleteAsync(int id)
+    public async Task<IReadOnlyList<DeliveryMethod>> GetAllDeliveryMethodsAsync()
+         => (IReadOnlyList<DeliveryMethod>)await _unitOfWork.DeliveryMethodRepo.GetAllAsync();
+    public async Task<IReadOnlyList<Order>> GetAllOrdersForUserAsync(string buyerEmail)
     {
-        var order = await _unitOfWork.orderRepository.GetByID(id);
-        if (order == null)
-        {
-            throw new Exception("Order not found");
-        }
-
-        await _unitOfWork.orderRepository.DeleteAsync(id);
-        _unitOfWork.Complete();
-        return "Deleted success";
+       return await _unitOfWork.orderRepository.GetAllAsyncWithSpec(new OrderSpecifications(buyerEmail));
+    }
+    public async Task<Order?> GetOrderByIdforUserAsync(int orderid, string buyerEmail)
+    {
+        return await _unitOfWork.orderRepository.GetByIdAsyncWithSpec(new OrderSpecifications(buyerEmail, orderid));
     }
 }

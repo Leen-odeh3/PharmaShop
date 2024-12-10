@@ -1,11 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
-using pharmacy.Core.Contracts.IServices;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.DTOs.Category;
 using pharmacy.Core.Entities;
 using pharmacy.Core;
 using AutoMapper;
 using Newtonsoft.Json;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Application.Services;
 public class CategoryService : ICategoryService
@@ -50,8 +49,8 @@ public class CategoryService : ICategoryService
 
             var category = _mapper.Map<Category>(categoryRequestDto);
 
-            category.ImageUrlsJson = imageUrls.Count > 0 ? JsonConvert.SerializeObject(imageUrls) : "[]";
-            category.ImagePublicIdsJson = imagePublicIds.Count > 0 ? JsonConvert.SerializeObject(imagePublicIds) : "[]";
+       //     category.ImageUrlsJson = imageUrls.Count > 0 ? JsonConvert.SerializeObject(imageUrls) : "[]";
+          //  category.ImagePublicIdsJson = imagePublicIds.Count > 0 ? JsonConvert.SerializeObject(imagePublicIds) : "[]";
             await _unitOfWork.categoryRepository.CreateAsync(category);
             _unitOfWork.Complete();
 

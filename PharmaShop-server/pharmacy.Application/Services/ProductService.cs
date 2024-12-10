@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities;
 using pharmacy.Core.DTOs.Product;
 using Microsoft.AspNetCore.Http;
-using pharmacy.Core.Contracts.IServices;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Core.Services;
 public class ProductService : IProductService
@@ -35,10 +34,11 @@ public class ProductService : IProductService
         }
 
         var product = _mapper.Map<Product>(productDto);
-        product.ImageUrls = imageUrls;
+        /*product.ImageUrls = imageUrls;
         product.ImagePublicIds = imagePublicIds;
         product.ImageUrlsJson = imageUrls.Count > 0 ? System.Text.Json.JsonSerializer.Serialize(imageUrls) : "[]";
         product.ImagePublicIdsJson = imagePublicIds.Count > 0 ? System.Text.Json.JsonSerializer.Serialize(imagePublicIds) : "[]";
+        */
 
         await _unitOfWork.productRepository.CreateAsync(product);
         _unitOfWork.Complete();
@@ -69,7 +69,7 @@ public class ProductService : IProductService
             throw new Exception("Product not found.");
 
         await _unitOfWork.productRepository.DeleteAsync(id);
-         _unitOfWork.Complete();
+        _unitOfWork.Complete();
 
         return "Product deleted successfully.";
     }

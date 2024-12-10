@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
-using pharmacy.Core.Contracts.IAuthService;
 using pharmacy.Core.DTOs.Admin;
 using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.DTOs.Login;
 using pharmacy.Core.DTOs.Pharmacist;
 using pharmacy.Core.DTOs.shared;
+using pharmacy.Core.IAuthService;
 
 namespace pharmacy.Api.Controllers;
 [Route("api/[controller]")]

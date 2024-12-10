@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
 
 namespace pharmacy.Infrastructure.Repositories;
@@ -22,7 +22,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         var product = await _context.products
             .Include(p => p.Brand)
             .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.ProductId == id);
+            .FirstOrDefaultAsync(p => p.Id == id);
 
         if (product is null)
         {

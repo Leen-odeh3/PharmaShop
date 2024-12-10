@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
 using pharmacy.Core.DTOs.Review;
-using pharmacy.Core.Contracts.IServices;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Api.Controllers;
 

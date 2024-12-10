@@ -1,9 +1,9 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using pharmacy.Application.Services;
-using pharmacy.Core.Contracts.IAuthService;
-using pharmacy.Core.Contracts.ILogger;
-using pharmacy.Core.Contracts.IServices;
+using pharmacy.Core.IAuthService;
+using pharmacy.Core.ILogger;
 using pharmacy.Core.Services;
+using pharmacy.Core.Services.Contract;
 using pharmacy.Infrastructure.Application.AuthService;
 using pharmacy.Infrastructure.Application.Logger;
 
@@ -21,11 +21,8 @@ public static class ModuleApplicationDependencies
         services.AddScoped<IDiscountService, DiscountService>();
         services.AddScoped<IProductService,ProductService>();
         services.AddScoped<IReviewService, ReviewService>();  
-        services.AddScoped<PaymentMethodService, PaymentMethodService>();
-        services.AddScoped<ICartService, CartService>();
-        services.AddScoped<ICartItemService, CartItemService>();
+        services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IOrderService, OrderService>();
-        services.AddScoped<IOrderItemService,OrderItemService>();   
 
 
         return services;

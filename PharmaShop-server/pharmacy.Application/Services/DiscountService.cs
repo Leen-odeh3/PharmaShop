@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Discount;
 using pharmacy.Core.Entities;
 using pharmacy.Core;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Application.Services;
 public class DiscountService : IDiscountService

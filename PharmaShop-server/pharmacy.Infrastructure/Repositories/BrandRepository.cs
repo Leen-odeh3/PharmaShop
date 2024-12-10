@@ -1,6 +1,5 @@
-﻿
-using pharmacy.Core.Contracts;
-using pharmacy.Core.Entities;
+﻿using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
 
 namespace pharmacy.Infrastructure.Repositories;

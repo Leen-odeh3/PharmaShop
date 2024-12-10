@@ -2,8 +2,8 @@
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities.Helpers;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Infrastructure.Application;
 public class PhotoService : IPhotoService

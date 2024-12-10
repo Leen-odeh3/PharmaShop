@@ -1,9 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace pharmacy.Core.Entities;
-public class Discount
+public class Discount : BaseEntity
 {
-    public int DiscountId { get; set; }
     public DateTime StartDateUtc { get; set; }
     public DateTime EndDateUtc { get; set; }   
     public decimal Percentage { get; set; }
