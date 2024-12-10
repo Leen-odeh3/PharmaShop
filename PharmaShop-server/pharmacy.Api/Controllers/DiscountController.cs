@@ -106,4 +106,22 @@ public class DiscountController : ControllerBase
             return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
         }
     }
+
+    [HttpGet("top-discounts")]
+    public async Task<IActionResult> GetTopDiscountsAsync(int topN, DateTime now)
+    {
+        try
+        {
+            var topDiscounts = await _discountService.GetTopDiscountsAsync(topN, now);
+            if(topDiscounts is null)
+            {
+                return _responseHandler.BadRequest("No Discount Found In this time , Please Choose another date");
+            }
+            return _responseHandler.Success(topDiscounts,$"Get Top {topN} successfully");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.BadRequest($"An error occurred while fetching top {topN} discounts: {ex.Message}");
+        }
+    }
 }

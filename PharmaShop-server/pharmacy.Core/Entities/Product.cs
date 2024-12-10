@@ -18,5 +18,5 @@ public class Product : BaseEntity
     public int BrandId { get; set; }
     public Brand Brand { get; set; }
     public Discount Discount { get; set; }
-    public int DiscountId { get; set; }
+    public int? DiscountId { get; set; }
 }

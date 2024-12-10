@@ -1,11 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
-using pharmacy.Core;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.DTOs.Brand;
-using pharmacy.Core.Entities;
 using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Api.Controllers;
@@ -44,7 +39,7 @@ public class BrandController : ControllerBase
         }
 
         var updatedBrand = await _brandService.UpdateBrandAsync(id, brandRequestDto);
-        if (updatedBrand == null)
+        if (updatedBrand is null)
         {
             return _responseHandler.NotFound("Brand not found.");
         }

@@ -162,6 +162,10 @@
               "target": "Package",
               "version": "[13.0.1, )"
             },
+            "Mapster": {
+              "target": "Package",
+              "version": "[7.4.0, )"
+            },
             "Stripe.net": {
               "target": "Package",
               "version": "[47.1.0, )"

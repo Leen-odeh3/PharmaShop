@@ -9,7 +9,5 @@ public interface IDiscountService
     Task<IEnumerable<DiscountResponseDto>> GetAllDiscountsAsync();
     Task<DiscountResponseDto> UpdateDiscountAsync(int id, DiscountRequestDto discountRequestDto);
     Task<string> DeleteDiscountAsync(int id);
-    Task<bool> CheckDiscountIsActiveOrNot(int id);
-    Task<int> GetTotalPrice(int id);
     Task<IEnumerable<Discount>> GetTopDiscountsAsync(int topN, DateTime now);
 }
