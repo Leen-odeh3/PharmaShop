@@ -30,6 +30,26 @@ public class ProductController : ControllerBase
         }
     }
 
+    [HttpGet("{id}/images")]
+    public async Task<IActionResult> GetProductImages(int id)
+    {
+        try
+        {
+            var images = await _productService.GetProductImagesAsync(id);
+            if (images == null || images.Count == 0)
+            {
+                return NotFound(new { Message = "No images found for this product." });
+            }
+
+            return Ok(new { Succeeded = true, Data = images });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = ex.Message });
+        }
+    }
+
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductRequestDto productRequestDto)
     {

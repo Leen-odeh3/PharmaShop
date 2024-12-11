@@ -8,4 +8,5 @@ public interface IProductService
     Task<string> DeleteProductAsync(int id);
     Task<ProductResponseDto> GetProductByIdAsync(int id);
     Task<IEnumerable<ProductResponseDto>> GetAllProductsAsync();
+    Task<List<string>> GetProductImagesAsync(int id);
 }

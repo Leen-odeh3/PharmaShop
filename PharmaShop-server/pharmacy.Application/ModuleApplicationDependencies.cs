@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using pharmacy.Application.Services;
+using pharmacy.Core;
 using pharmacy.Core.IAuthService;
 using pharmacy.Core.ILogger;
 using pharmacy.Core.Services;
@@ -23,6 +24,8 @@ public static class ModuleApplicationDependencies
         services.AddScoped<IReviewService, ReviewService>();  
         services.AddScoped<IPaymentService, PaymentService>();
         services.AddScoped<IOrderService, OrderService>();
+
+        services.AddScoped<Lazy<IUnitOfWork>>(provider => new Lazy<IUnitOfWork>(() => provider.GetRequiredService<IUnitOfWork>()));
 
 
         return services;

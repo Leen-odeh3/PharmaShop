@@ -38,4 +38,16 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         return product;
     }
 
+    public async Task<Product> GetProductImagesAsync(int id)
+    {
+        return await _context.products
+            .Where(p => p.Id == id)
+            .Select(p => new Product
+            {
+                Id = p.Id,
+                ImageUrls = p.ImageUrls
+            })
+            .FirstOrDefaultAsync();
+    }
+
 }

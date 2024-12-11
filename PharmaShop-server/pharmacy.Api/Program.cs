@@ -21,6 +21,7 @@ public class Program
                         .AddCorsPolicy().AddApplicationDependencies();
 
         MapsterConfig.Configure();
+        ProductMappingConfig.Configure();
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
