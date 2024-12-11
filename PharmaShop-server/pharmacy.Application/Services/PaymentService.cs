@@ -89,11 +89,7 @@ public class PaymentService : IPaymentService
                 Currency = "usd"
             };
 
-
-
-
             var paymentIntent = await paymentIntentService.CreateAsync(options);
-
 
             basket.PaymentIntentId= paymentIntent.Id;
             basket.ClientSecret= paymentIntent.ClientSecret;
@@ -113,6 +109,4 @@ public class PaymentService : IPaymentService
         return basket;
 
     }
-
-
 }

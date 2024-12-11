@@ -29,7 +29,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _context.Set<T>().ToListAsync();
+        return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
 
     public async Task<T> GetByID(int id)

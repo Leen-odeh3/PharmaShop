@@ -1,73 +1,61 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using pharmacy.Core.Entities;
-using pharmacy.Core;
 using System.Security.Claims;
-using pharmacy.Core.DTOs.Product;
+using pharmacy.Core.Services.Contract;
+using pharmacy.Api.Responses;
+using pharmacy.Core.Exceptions;  
 
-namespace pharmacy.Api.Controllers;
-public class WishlistItemController : BaseApiController
+namespace pharmacy.Api.Controllers
 {
-    private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-
-    public WishlistItemController(IUnitOfWork unitOfWork
-        , IMapper mapper)
-    {
-        _unitOfWork = unitOfWork;
-        _mapper = mapper;
-    }
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpGet]
-    public async Task<ActionResult<IReadOnlyList<ProductResponseDto>>> GetProductsFromListByuserEmail()
+    public class WishlistItemController : BaseApiController
     {
-        var email = User.FindFirstValue(ClaimTypes.Email);
+        private readonly IWishlistService _wishlistService;
+        private readonly IResponseHandler _responseHandler;
 
-        var result = await _unitOfWork.WishlistRepo.GetAllProductForUserByEmailAsync(email);
-
-
-        return Ok(_mapper.Map<IReadOnlyList<Product>, IReadOnlyList<ProductResponseDto>>(result));
-    }
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpPost("{productid}")]
-    public async Task<ActionResult> AddToWishlist(int productid)
-    {
-        var email = User.FindFirstValue(ClaimTypes.Email);
-        var obj = new WishlistItem()
+        public WishlistItemController(IWishlistService wishlistService, IResponseHandler responseHandler)
         {
-            ProductId = productid,
-            UserEmail = email
-        };
+            _wishlistService = wishlistService;
+            _responseHandler = responseHandler;
+        }
 
-        await _unitOfWork.WishlistRepo.CreateAsync(obj);
+        [HttpGet]
+        public async Task<IActionResult> GetProductsFromWishlist()
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
+            var products = await _wishlistService.GetProductsFromWishlistByUserEmailAsync(email);
 
-        var result = _unitOfWork.Complete();
+            if (products.Count == 0)
+                throw new NotFoundException("No products found in wishlist.");
 
-        if (result > 0)
-            return Ok();
+            return _responseHandler.Success(products, "Products retrieved successfully.");
+        }
 
-        return BadRequest();
+        [HttpPost("{productid}")]
+        public async Task<IActionResult> AddToWishlist(int productid)
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
 
-    }
+            var success = await _wishlistService.AddToWishlistAsync(email, productid);
 
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-    [HttpDelete("{productid}")]
-    public async Task<ActionResult> DeleteProductfromWishlist(int productid)
-    {
-        var email = User.FindFirstValue(ClaimTypes.Email);
+            if (success)
+                return _responseHandler.Created(productid, "Item successfully added to wishlist.");
 
-        var Wishlistobj = await _unitOfWork.WishlistRepo.GetWishlistobjAsync(email, productid);
+            throw new BadRequestException("Item already in wishlist.");
+        }
 
-        _unitOfWork.WishlistRepo.DeleteAsync(productid);
+        [HttpDelete("{productid}")]
+        public async Task<IActionResult> DeleteProductFromWishlist(int productid)
+        {
+            var email = User.FindFirstValue(ClaimTypes.Email);
 
-        var result =_unitOfWork.Complete();
+            var success = await _wishlistService.RemoveFromWishlistAsync(email, productid);
 
-        if (result > 0)
-            return Ok();
+            if (success)
+                return _responseHandler.Success(success, "Item successfully removed from wishlist.");
 
-        return BadRequest();
-
+            throw new NotFoundException("Item not found in wishlist.");
+        }
     }
 }

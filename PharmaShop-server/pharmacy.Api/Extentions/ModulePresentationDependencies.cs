@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using pharmacy.Api.Responses;
 using pharmacy.Api.Validation;
+using pharmacy.Application.Services;
 using pharmacy.Core;
 using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.Entities.Helpers;
@@ -65,7 +66,7 @@ public static class ModulePresentationDependencies
     {
         config.RegisterValidatorsFromAssemblyContaining<RegisterValidation>();
     });
-
+        services.AddScoped<IWishlistService, WishlistService>();
         return services;
     }
 }

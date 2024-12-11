@@ -1,7 +1,12 @@
 using pharmacy.Api.Extentions;
 using pharmacy.Api.Mapping;
+using pharmacy.Api.Middlewares;
 using pharmacy.Application;
 using pharmacy.Infrastructure;
+using Serilog;
+using Serilog.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
+
 namespace pharmacy.Api;
 public class Program
 {
@@ -19,7 +24,7 @@ public class Program
                         .AddSwaggerDocumentation()
                         .AddCloudinary(builder.Configuration)
                         .AddCorsPolicy().AddApplicationDependencies();
-
+        builder.Host.UseSerilog();
         MapsterConfig.Configure();
         ProductMappingConfig.Configure();
         var app = builder.Build();
@@ -29,7 +34,7 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        app.UseMiddleware<GlobalExceptionHandling>();
         app.UseHttpsRedirection();
         app.UseCors("AllowAll");
         app.UseAuthentication();  
