@@ -1,5 +1,4 @@
 ﻿using pharmacy.Core;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.ILogger;
 using pharmacy.Core.Repositories.Contract;
 using pharmacy.Core.Services.Contract;
@@ -16,12 +15,10 @@ public class UnitOfWork : IUnitOfWork
     public IBrandRepository brandRepository { get; private set; }
     public IPhotoService photoService { get; private set; }
     public IDiscountRepository discountRepository { get; private set; }
-    public IOrderRepository orderRepository { get; private set; }
-    public IOrderItemRepository orderItemRepository { get; private set; }
     public IReviewRepository reviewRepository { get; private set; }
     public IWishListRepositry WishlistRepo { get; private set; }
-    public IDeliveryRepository DeliveryMethodRepo { get; private set; }
-    public IBasketRepository BasketRepository { get; private set; }
+    public IPaymentMethodRepository PaymentMethodRepository { get; private set; }
+    public ICartRepository cartRepository { get; private set; } 
 
     public UnitOfWork(ApplicationDbContext context, IPhotoService photoService, ILog logger)
     {
@@ -32,10 +29,11 @@ public class UnitOfWork : IUnitOfWork
         categoryRepository = new CategoryRepository(_context);
         brandRepository = new BrandRepository(_context);
         discountRepository= new DiscountRepository(_context);
-        orderRepository=new OrderRepository(_context);
         reviewRepository = new ReviewRepository(_context,_logger);
         WishlistRepo = new WishListRepository(_context);
-
+        discountRepository = new DiscountRepository(_context);
+        PaymentMethodRepository = new PaymentMethodRepository(_context);
+        cartRepository = new CartRepository(_context);
     }
     public int Complete()
     {

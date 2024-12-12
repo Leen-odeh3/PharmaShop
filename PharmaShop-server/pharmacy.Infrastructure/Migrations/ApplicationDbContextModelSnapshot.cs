@@ -155,13 +155,38 @@ namespace pharmacy.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Brand", b =>
+            modelBuilder.Entity("pharmacy.Core.Entities.Achieve", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CeatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CheckOutAchieves");
+                });
+
+            modelBuilder.Entity("pharmacy.Core.Entities.Brand", b =>
+                {
+                    b.Property<int>("BrandId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("BrandId"));
 
                     b.Property<string>("BrandName")
                         .IsRequired()
@@ -173,18 +198,18 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("BrandId");
 
                     b.ToTable("brands");
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Category", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("CategoryId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"));
 
                     b.Property<string>("CategoryDescription")
                         .IsRequired()
@@ -200,18 +225,18 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("CategoryId");
 
                     b.ToTable("categories");
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Discount", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("DiscountId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscountId"));
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");
@@ -225,7 +250,7 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("StartDateUtc")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("DiscountId");
 
                     b.ToTable("discounts");
                 });
@@ -322,143 +347,40 @@ namespace pharmacy.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.Address", b =>
+            modelBuilder.Entity("pharmacy.Core.Entities.PaymentMethod", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("PaymentMethodId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("City")
+                    b.Property<string>("PaymentMethodName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.HasKey("PaymentMethodId");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.ToTable("paymentMethods");
 
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Address");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.DeliveryMethod", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Cost")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("DeliveryTime")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShortName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("DeliveryMethods");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BuyerEmail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int?>("DeliveryMethodId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset>("OrderTime")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("PaymentIntentId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ShippingAddressId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("SubTotal")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DeliveryMethodId");
-
-                    b.HasIndex("ShippingAddressId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderItems");
+                    b.HasData(
+                        new
+                        {
+                            PaymentMethodId = new Guid("3b66e66b-4866-4dcd-9c7a-7eace5de7b6b"),
+                            PaymentMethodName = "Credit Card"
+                        },
+                        new
+                        {
+                            PaymentMethodId = new Guid("9455d543-8e39-415e-bee8-ea46d0cbb868"),
+                            PaymentMethodName = "PayPal"
+                        });
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
 
                     b.Property<int>("BrandId")
                         .HasColumnType("int");
@@ -494,7 +416,7 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.HasIndex("BrandId");
 
@@ -505,32 +427,13 @@ namespace pharmacy.Infrastructure.Migrations
                     b.ToTable("products");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.ProductItemOrdered", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ProductName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ProductItemOrdered");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.Review", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ReviewId"));
 
                     b.Property<string>("Comment")
                         .IsRequired()
@@ -549,7 +452,7 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ReviewId");
 
                     b.HasIndex("CustomerId");
 
@@ -560,11 +463,11 @@ namespace pharmacy.Infrastructure.Migrations
 
             modelBuilder.Entity("pharmacy.Core.Entities.WishlistItem", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("WishlistItemId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WishlistItemId"));
 
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
@@ -573,7 +476,7 @@ namespace pharmacy.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("WishlistItemId");
 
                     b.HasIndex("ProductId");
 
@@ -697,38 +600,6 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.Order", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.OrderAggregate.DeliveryMethod", "deliveryMethod")
-                        .WithMany()
-                        .HasForeignKey("DeliveryMethodId");
-
-                    b.HasOne("pharmacy.Core.Entities.OrderAggregate.Address", "ShippingAddress")
-                        .WithMany()
-                        .HasForeignKey("ShippingAddressId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ShippingAddress");
-
-                    b.Navigation("deliveryMethod");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.OrderItem", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.OrderAggregate.Order", null)
-                        .WithMany("Items")
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("pharmacy.Core.Entities.ProductItemOrdered", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.Product", b =>
                 {
                     b.HasOne("pharmacy.Core.Entities.Brand", "Brand")
@@ -792,11 +663,6 @@ namespace pharmacy.Infrastructure.Migrations
             modelBuilder.Entity("pharmacy.Core.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderAggregate.Order", b =>
-                {
-                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

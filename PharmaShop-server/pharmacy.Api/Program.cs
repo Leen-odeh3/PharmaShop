@@ -25,8 +25,6 @@ public class Program
                         .AddCloudinary(builder.Configuration)
                         .AddCorsPolicy().AddApplicationDependencies();
         builder.Host.UseSerilog();
-        MapsterConfig.Configure();
-        ProductMappingConfig.Configure();
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())

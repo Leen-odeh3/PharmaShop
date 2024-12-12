@@ -29,7 +29,7 @@ namespace pharmacy.Application.Services
                 _unitOfWork.Complete();
 
                 var reviewResponseDto = createdReview.Adapt<ReviewResponseDto>(); 
-                _logger.LogInformation("Review added successfully with ID {ReviewId}.", createdReview.Id);
+                _logger.LogInformation("Review added successfully with ID {ReviewId}.", createdReview.ReviewId);
                 return reviewResponseDto;
             }
             catch (Exception ex)
@@ -50,7 +50,7 @@ namespace pharmacy.Application.Services
                 _unitOfWork.Complete();
 
                 var reviewResponseDto = updatedReview.Adapt<ReviewResponseDto>();
-                _logger.LogInformation("Review with ID {ReviewId} updated successfully.", updatedReview.Id);
+                _logger.LogInformation("Review with ID {ReviewId} updated successfully.", updatedReview.ReviewId);
                 return reviewResponseDto;
             }
             catch (Exception ex)

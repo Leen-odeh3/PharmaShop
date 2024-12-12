@@ -22,7 +22,7 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         var product = await _context.products
             .Include(p => p.Brand)
             .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(p => p.ProductId == id);
 
         if (product is null)
         {
@@ -41,10 +41,10 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
     public async Task<Product> GetProductImagesAsync(int id)
     {
         return await _context.products
-            .Where(p => p.Id == id)
+            .Where(p => p.ProductId == id)
             .Select(p => new Product
             {
-                Id = p.Id,
+                ProductId = p.ProductId,
                 ImageUrls = p.ImageUrls
             })
             .FirstOrDefaultAsync();

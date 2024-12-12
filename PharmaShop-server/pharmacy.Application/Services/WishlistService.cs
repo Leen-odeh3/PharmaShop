@@ -52,7 +52,7 @@ public class WishlistService : IWishlistService
             return false;
         }
 
-        await _unitOfWork.WishlistRepo.DeleteAsync(wishlistItem.Id);
+        await _unitOfWork.WishlistRepo.DeleteAsync(wishlistItem.WishlistItemId);
 
         var result =_unitOfWork.Complete();
 

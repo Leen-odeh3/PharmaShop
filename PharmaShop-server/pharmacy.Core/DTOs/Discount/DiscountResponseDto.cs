@@ -1,7 +1,7 @@
 ﻿namespace pharmacy.Core.DTOs.Discount;
 public class DiscountResponseDto
 {
-    public int Id { get; set; }
+    public int DiscountId { get; set; }
     public DateTime StartDateUtc { get; set; }
     public DateTime EndDateUtc { get; set; }
     public decimal Percentage { get; set; }

@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Core.Repositories.Contract;
+using pharmacy.Core.Services.Contract;
 using pharmacy.Infrastructure.DbContext;
 using pharmacy.Infrastructure.Repositories;
 using System;
@@ -23,15 +23,13 @@ public static class ModuleInfrastructureDependencies
         );
 
         services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-        services.AddScoped<IBasketRepository, BasketRepository>();
-
         services.AddScoped<IProductRepository, ProductRepository>();
         services.AddScoped<ICategoryRepository, CategoryRepository>();
         services.AddScoped<IBrandRepository, BrandRepository>();
         services.AddScoped<IDiscountRepository, DiscountRepository>();
         services.AddScoped<IReviewRepository, ReviewRepository>();
-        services.AddScoped<IOrderItemRepository,OrderItemRepository>();
-        services.AddScoped<IOrderRepository, OrderRepository>();
+        services.AddScoped<IPaymentMethodRepository, PaymentMethodRepository>();
+        services.AddScoped<ICartRepository ,CartRepository>();
 
         services.AddIdentity<User, IdentityRole>()
           .AddEntityFrameworkStores<ApplicationDbContext>()

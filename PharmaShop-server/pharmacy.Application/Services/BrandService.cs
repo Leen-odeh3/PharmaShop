@@ -39,7 +39,7 @@ public class BrandService : IBrandService
         try
         {
             var brand = brandRequestDto.Adapt<Brand>();
-            brand.Id = id;
+            brand.BrandId= id;
             var updatedBrand = await _unitOfWork.brandRepository.UpdateAsync(id, brand);
             if (updatedBrand is null)
             {

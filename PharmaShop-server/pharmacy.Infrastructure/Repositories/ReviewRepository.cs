@@ -27,12 +27,12 @@ public class ReviewRepository:GenericRepository<Review> ,IReviewRepository
             var customerEmail = review.Customer?.Email ?? "Not Available";
             var productName = review.Product?.ProductName ?? "Not Available";
 
-            _log.Log($"Review ID {review.Id} has customer email {customerEmail} and product name {productName}.", "info");
+            _log.Log($"Review ID {review.ReviewId} has customer email {customerEmail} and product name {productName}.", "info");
         }
 
         return reviews.Select(review => new ReviewResponseDto
         {
-            Id = review.Id,
+            ReviewId = review.ReviewId,
             Comment = review.Comment,
             Rating = review.Rating,
             CreatedDate = review.CreatedDate,

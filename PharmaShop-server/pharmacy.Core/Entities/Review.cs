@@ -1,7 +1,8 @@
 ﻿
 namespace pharmacy.Core.Entities;
-public class Review : BaseEntity
+public class Review 
 {
+    public int ReviewId { get; set; }
     public string Comment { get; set; }
     public int Rating { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
