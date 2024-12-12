@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pharmacy.Core.Contracts;
+using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
 namespace pharmacy.Infrastructure.Repositories;
-public class GenericRepository<T> : IGenericRepository<T> where T : class
+public class GenericRepository<T> : IGenericRepository<T> where T :class
 {
     public readonly ApplicationDbContext _context;
     public GenericRepository(ApplicationDbContext context)
@@ -27,7 +28,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<IEnumerable<T>> GetAllAsync()
     {
-        return await _context.Set<T>().ToListAsync();
+        return await _context.Set<T>().AsNoTracking().ToListAsync();
     }
 
     public async Task<T> GetByID(int id)

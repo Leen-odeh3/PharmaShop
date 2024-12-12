@@ -1,109 +1,86 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
-using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Discount;
-namespace pharmacy.Api.Controllers;
+using pharmacy.Core.Services.Contract;
+using pharmacy.Core.Exceptions; 
 
-[Route("api/[controller]")]
-[ApiController]
-public class DiscountController : ControllerBase
+namespace pharmacy.Api.Controllers
 {
-    private readonly IDiscountService _discountService;
-    private readonly IResponseHandler _responseHandler;
-
-    public DiscountController(IDiscountService discountService, IResponseHandler responseHandler)
+    [Route("api/[controller]")]
+    [ApiController]
+    public class DiscountController : ControllerBase
     {
-        _discountService = discountService;
-        _responseHandler = responseHandler;
-    }
+        private readonly IDiscountService _discountService;
+        private readonly IResponseHandler _responseHandler;
 
-    [HttpPost("addDiscount")]
-    public async Task<IActionResult> CreateDiscountAsync([FromBody] DiscountRequestDto discountRequestDto)
-    {
-        try
+        public DiscountController(IDiscountService discountService, IResponseHandler responseHandler)
+        {
+            _discountService = discountService;
+            _responseHandler = responseHandler;
+        }
+
+        [HttpPost("addDiscount")]
+        public async Task<IActionResult> CreateDiscountAsync([FromBody] DiscountRequestDto discountRequestDto)
         {
             if (discountRequestDto is null)
-            {
-                return _responseHandler.BadRequest("Invalid discount data.");
-            }
+                throw new BadRequestException("Invalid discount data.");
 
             var createdDiscount = await _discountService.CreateDiscountAsync(discountRequestDto);
             return _responseHandler.Created(createdDiscount, "Discount created successfully.");
         }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
-        }
-    }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetDiscountByIdAsync(int id)
-    {
-        try
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDiscountByIdAsync(int id)
         {
             var discount = await _discountService.GetDiscountByIdAsync(id);
 
-            if (discount == null)
-                return _responseHandler.NotFound($"Discount with ID {id} not found.");
-
+            if (discount is null)
+             throw new NotFoundException($"Discount with ID {id} not found.");
+          
             return _responseHandler.Success(discount, "Discount details fetched successfully.");
         }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
-        }
-    }
 
-    [HttpGet]
-    public async Task<IActionResult> GetAllDiscountsAsync()
-    {
-        try
+        [HttpGet]
+        public async Task<IActionResult> GetAllDiscountsAsync()
         {
             var discounts = await _discountService.GetAllDiscountsAsync();
 
             if (discounts is null || !discounts.Any())
-            {
-                return _responseHandler.NotFound("No discounts found.");
-            }
+                throw new NotFoundException("No discounts found.");
 
             return _responseHandler.Success(discounts, "Discounts fetched successfully.");
         }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
-        }
-    }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateDiscountAsync(int id, [FromBody] DiscountRequestDto discountRequestDto)
-    {
-        try
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateDiscountAsync(int id, [FromBody] DiscountRequestDto discountRequestDto)
         {
+            if (discountRequestDto is null)
+                throw new BadRequestException("Invalid discount data.");
+
             var updatedDiscount = await _discountService.UpdateDiscountAsync(id, discountRequestDto);
 
             if (updatedDiscount is null)
-                return _responseHandler.NotFound($"Discount with ID {id} not found.");
+                throw new NotFoundException($"Discount with ID {id} not found.");
 
             return _responseHandler.Success(updatedDiscount, "Discount updated successfully.");
         }
-        catch (Exception ex)
-        {
-            return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
-        }
-    }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteDiscountAsync(int id)
-    {
-        try
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteDiscountAsync(int id)
         {
             var result = await _discountService.DeleteDiscountAsync(id);
-
-            return _responseHandler.Success("Discount deleted successfully.",result);
+            return _responseHandler.Success("Discount deleted successfully.", result);
         }
-        catch (Exception ex)
+
+        [HttpGet("top-discounts")]
+        public async Task<IActionResult> GetTopDiscountsAsync(int topN, DateTime now)
         {
-            return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
+            var topDiscounts = await _discountService.GetTopDiscountsAsync(topN, now);
+
+            if (topDiscounts is null || !topDiscounts.Any())
+                throw new BadRequestException("No discounts found for the given time, please choose another date.");
+
+            return _responseHandler.Success(topDiscounts, $"Top {topN} discounts fetched successfully.");
         }
     }
 }

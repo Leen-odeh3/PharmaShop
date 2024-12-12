@@ -1,13 +1,22 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using pharmacy.Api.Mapping;
 using pharmacy.Api.Responses;
+using pharmacy.Api.Validation;
+using pharmacy.Application.Services;
 using pharmacy.Core;
-using pharmacy.Core.Contracts;
+using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.Entities.Helpers;
 using pharmacy.Core.Entities.Identity;
+using pharmacy.Core.Repositories.Contract;
+using pharmacy.Core.Services.Contract;
 using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.DbContext;
+using pharmacy.Infrastructure.Repositories;
+using StackExchange.Redis;
+using Stripe;
+using System;
 using System.Reflection;
 using System.Text;
 
@@ -16,6 +25,8 @@ public static class ModulePresentationDependencies
 {
     public static IServiceCollection AddPresentationDependencies(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddHttpClient();
+
         services.AddSingleton<IConfiguration>(configuration);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -32,14 +43,24 @@ public static class ModulePresentationDependencies
              IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
          };
      });
+        MapsterConfig.Configure();
+        ProductMappingConfig.Configure();
 
-       services.Configure<JWT>(configuration.GetSection("JWT"));
+        Stripe.StripeConfiguration.ApiKey = configuration["stripe:Secretkey"];
+
+        services.Configure<JWT>(configuration.GetSection("JWT"));
 
         services.AddScoped<IPhotoService, PhotoService>();
         /* services.AddAuthorization(options =>
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
         });*/
+
+        services.AddSingleton<IConnectionMultiplexer>(sp =>
+        {
+            var configuration = ConfigurationOptions.Parse("localhost:5068", true);
+            return ConnectionMultiplexer.Connect(configuration);
+        });
 
         services.Configure<CloudinarySettings>(configuration.GetSection("CloudinarySettings"));
 
@@ -49,6 +70,13 @@ public static class ModulePresentationDependencies
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         services.AddScoped<IResponseHandler, ResponseHandler>();
 
+
+        services.AddControllers()
+                .AddFluentValidation(config =>
+    {
+        config.RegisterValidatorsFromAssemblyContaining<RegisterValidation>();
+    });
+        services.AddScoped<IWishlistService, WishlistService>();
         return services;
     }
 }

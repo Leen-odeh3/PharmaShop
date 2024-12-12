@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
 using pharmacy.Core.DTOs.Review;
-using pharmacy.Core.Contracts.IServices;
+using pharmacy.Core.Services.Contract;
+using pharmacy.Core.Exceptions; 
 
 namespace pharmacy.Api.Controllers;
 
@@ -22,9 +23,7 @@ public class ReviewController : ControllerBase
     public async Task<IActionResult> AddReview([FromBody] ReviewRequestDto reviewRequestDto)
     {
         if (reviewRequestDto is null)
-        {
-            return _responseHandler.BadRequest("Invalid review data.");
-        }
+            throw new BadRequestException("Invalid review data.");
 
         var reviewResponseDto = await _reviewService.AddReviewAsync(reviewRequestDto);
         return _responseHandler.Created(reviewResponseDto, "Review created successfully.");
@@ -34,11 +33,12 @@ public class ReviewController : ControllerBase
     public async Task<IActionResult> UpdateReview(int id, [FromBody] ReviewRequestDto reviewRequestDto)
     {
         if (reviewRequestDto is null)
-        {
-            return _responseHandler.BadRequest("Invalid review data.");
-        }
+            throw new BadRequestException("Invalid review data.");
 
         var updatedReview = await _reviewService.UpdateReviewAsync(id, reviewRequestDto);
+        if (updatedReview is null)
+           throw new NotFoundException("Review not found.");
+
         return _responseHandler.Success(updatedReview, "Review updated successfully.");
     }
 
@@ -46,6 +46,7 @@ public class ReviewController : ControllerBase
     public async Task<IActionResult> DeleteReview(int id)
     {
         var result = await _reviewService.DeleteReviewAsync(id);
+
         return _responseHandler.Success(result, "Review deleted successfully.");
     }
 
@@ -53,10 +54,8 @@ public class ReviewController : ControllerBase
     public async Task<IActionResult> GetReviewById(int id)
     {
         var review = await _reviewService.GetReviewByIdAsync(id);
-        if (review == null)
-        {
-            return _responseHandler.NotFound("Review not found.");
-        }
+        if (review is null)
+            throw new NotFoundException("Review not found.");
 
         return _responseHandler.Success(review, "Review retrieved successfully.");
     }

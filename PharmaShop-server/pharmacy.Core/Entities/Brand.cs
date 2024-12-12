@@ -1,5 +1,5 @@
 ﻿namespace pharmacy.Core.Entities;
-public class Brand
+public class Brand 
 {
     public int BrandId { get; set; }
     public string BrandName { get; set; }

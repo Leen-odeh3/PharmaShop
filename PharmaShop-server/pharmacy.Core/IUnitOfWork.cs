@@ -1,4 +1,5 @@
-﻿using pharmacy.Core.Contracts;
+﻿using pharmacy.Core.Repositories.Contract;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Core;
 public interface IUnitOfWork
@@ -8,11 +9,10 @@ public interface IUnitOfWork
     IBrandRepository brandRepository { get; }
     IPhotoService photoService { get; }
     IDiscountRepository discountRepository { get; }
-    IOrderRepository orderRepository { get; }
-    IOrderItemRepository orderItemRepository { get; }
-    public ICartRepository cartRepository { get;  }
-    public ICartItemRepository cartItemRepository { get; }
-    IPaymentMethodRepository PaymentMethodRepository { get; }
     public IReviewRepository reviewRepository { get;  }
+    IWishListRepositry WishlistRepo { get; }
+    ICartRepository cartRepository { get; }
+
+    IPaymentMethodRepository PaymentMethodRepository { get; }
     int Complete();
 }

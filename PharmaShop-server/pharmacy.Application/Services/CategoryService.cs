@@ -1,99 +1,130 @@
-﻿using Microsoft.AspNetCore.Http;
-using pharmacy.Core.Contracts.IServices;
-using pharmacy.Core.Contracts;
-using pharmacy.Core.DTOs.Category;
+﻿using pharmacy.Core.DTOs.Category;
 using pharmacy.Core.Entities;
 using pharmacy.Core;
-using AutoMapper;
-using Newtonsoft.Json;
+using pharmacy.Core.Services.Contract;
+using Mapster;
+using pharmacy.Core.ILogger;
 
 namespace pharmacy.Application.Services;
 public class CategoryService : ICategoryService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
-    private readonly IPhotoService _photoService;
+    private readonly ILog _logger; 
 
-    public CategoryService(IUnitOfWork unitOfWork, IMapper mapper, IPhotoService photoService)
+    public CategoryService(IUnitOfWork unitOfWork, ILog logger)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
-        _photoService = photoService;
+        _logger = logger;
     }
 
-    public async Task<CategoryResponseDto> AddCategoryAsync(CategoryRequestDto categoryRequestDto, List<IFormFile> images)
+    public async Task<CategoryResponseDto> AddCategoryAsync(CategoryRequestDto categoryRequestDto)
     {
-        if (images == null || !images.Any())
+        try
         {
-            return null; 
-        }
-
-        var uploadResults = await _photoService.UploadImagesAsync(images);
-        if (uploadResults?.Any() == true)
-        {
-            var imageUrls = new List<string>();
-            var imagePublicIds = new List<string>();
-
-            foreach (var result in uploadResults)
-            {
-                if (result?.Url != null && result?.PublicId != null)
-                {
-                    imageUrls.Add(result?.Url?.ToString());
-                    imagePublicIds.Add(result?.PublicId);
-                }
-            }
-
-            if (imageUrls.Count == 0 || imagePublicIds.Count == 0)
-            {
-                return null;
-            }
-
-            var category = _mapper.Map<Category>(categoryRequestDto);
-
-            category.ImageUrlsJson = imageUrls.Count > 0 ? JsonConvert.SerializeObject(imageUrls) : "[]";
-            category.ImagePublicIdsJson = imagePublicIds.Count > 0 ? JsonConvert.SerializeObject(imagePublicIds) : "[]";
+            var category = categoryRequestDto.Adapt<Category>(); 
             await _unitOfWork.categoryRepository.CreateAsync(category);
             _unitOfWork.Complete();
 
-            return _mapper.Map<CategoryResponseDto>(category);
-        }
+            _logger.Log("Category added successfully", "info");
 
-        return null;
+            return category.Adapt<CategoryResponseDto>();
+        }
+        catch (Exception ex)
+        {
+            _logger.Log($"Error while adding category: {ex.Message}", "error");
+            throw;
+        }
     }
 
     public async Task<CategoryResponseDto> UpdateCategoryAsync(int id, CategoryRequestDto categoryRequestDto)
     {
-        var category = await _unitOfWork.categoryRepository.GetByID(id);
+        try
+        {
+            var category = await _unitOfWork.categoryRepository.GetByID(id);
+            if (category is null)
+            {
+                _logger.Log("Category not found for update", "warning");
+                return null;
+            }
 
-        _mapper.Map(categoryRequestDto, category);
-        var updatedCategory = await _unitOfWork.categoryRepository.UpdateAsync(id, category);
-        _unitOfWork.Complete();
+            categoryRequestDto.Adapt(category); 
+            var updatedCategory = await _unitOfWork.categoryRepository.UpdateAsync(id, category);
+            _unitOfWork.Complete();
 
-        return _mapper.Map<CategoryResponseDto>(updatedCategory);
+            _logger.Log("Category updated successfully", "info");
+
+            return updatedCategory.Adapt<CategoryResponseDto>(); 
+        }
+        catch (Exception ex)
+        {
+            _logger.Log($"Error while updating category: {ex.Message}", "error");
+            throw;
+        }
     }
 
     public async Task<string> DeleteCategoryAsync(int id)
     {
-        var category = await _unitOfWork.categoryRepository.GetByID(id);
-        if (category is null)
+        try
         {
-            return "NotFound Category";
-        }
+            var category = await _unitOfWork.categoryRepository.GetByID(id);
+            if (category is null)
+            {
+                _logger.Log("Category not found for deletion", "warning");
+                return "NotFound Category";
+            }
 
-        await _unitOfWork.categoryRepository.DeleteAsync(id);
-        _unitOfWork.Complete();
-        return "Deleted Success";
+            await _unitOfWork.categoryRepository.DeleteAsync(id);
+            _unitOfWork.Complete();
+
+            _logger.Log("Category deleted successfully", "info");
+            return "Deleted Success";
+        }
+        catch (Exception ex)
+        {
+            _logger.Log($"Error while deleting category: {ex.Message}", "error");
+            throw;
+        }
     }
 
     public async Task<CategoryResponseDto> GetCategoryByIdAsync(int id)
     {
-        var category = await _unitOfWork.categoryRepository.GetByID(id);
-        return category is null ? null : _mapper.Map<CategoryResponseDto>(category);
+        try
+        {
+            var category = await _unitOfWork.categoryRepository.GetByID(id);
+            if (category is null)
+            {
+                _logger.Log("Category not found", "warning");
+                return null;
+            }
+
+            _logger.Log("Category retrieved successfully", "info");
+            return category.Adapt<CategoryResponseDto>();
+        }
+        catch (Exception ex)
+        {
+            _logger.Log($"Error while retrieving category: {ex.Message}", "error");
+            throw;
+        }
     }
 
     public async Task<List<CategoryResponseDto>> GetAllCategoriesAsync()
     {
-        var categories = await _unitOfWork.categoryRepository.GetAllAsync();
-        return categories is null || !categories.Any() ? new List<CategoryResponseDto>() : _mapper.Map<List<CategoryResponseDto>>(categories);
+        try
+        {
+            var categories = await _unitOfWork.categoryRepository.GetAllAsync();
+            if (categories is null || !categories.Any())
+            {
+                _logger.Log("No categories found", "warning");
+                return new List<CategoryResponseDto>();
+            }
+
+            _logger.Log("Categories retrieved successfully", "info");
+            return categories.Adapt<List<CategoryResponseDto>>(); 
+        }
+        catch (Exception ex)
+        {
+            _logger.Log($"Error while retrieving all categories: {ex.Message}", "error");
+            throw;
+        }
     }
 }

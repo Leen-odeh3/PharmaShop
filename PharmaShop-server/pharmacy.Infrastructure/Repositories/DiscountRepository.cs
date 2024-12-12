@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
 
 namespace pharmacy.Infrastructure.Repositories;
@@ -11,51 +11,13 @@ public class DiscountRepository : GenericRepository<Discount> , IDiscountReposit
         
     }
 
-    public async Task<bool> CheckDiscountIsActiveOrNot(int id)
-    {
-        var discount = await _context.discounts.FindAsync(id);
-
-        if (discount != null)
-        {
-            var start = discount.StartDateUtc;
-            var end = discount.EndDateUtc;
-
-            if (start <= DateTime.UtcNow && end >= DateTime.UtcNow)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
     public async Task<IEnumerable<Discount>> GetTopDiscountsAsync(int topN, DateTime now)
     {
         return await _context.discounts
-                             .Where(d => d.StartDateUtc <= now && d.EndDateUtc >= now) 
+                             .Where(d => d.StartDateUtc <= DateTime.Now && d.EndDateUtc >= DateTime.Now ) 
                              .OrderByDescending(d => d.Percentage) 
                              .Take(topN)
                              .ToListAsync();
-    }
-
-    public async Task<int> GetTotalPrice(int id)
-    {
-        var discount = await _context.discounts.FindAsync(id);
-
-        if (discount == null)  return 0;
-
-        var product = await _context.products
-                                     .Where(p => p.Discount.DiscountId == id)  
-                                     .FirstOrDefaultAsync();
-
-        if (product is null)
-            return 0;
-
-        var price = product.Price;
-        var discountAmount = (price * discount.Percentage) / 100; 
-        var totalPrice = price - discountAmount;
-
-        return (int)totalPrice; 
     }
 
 }

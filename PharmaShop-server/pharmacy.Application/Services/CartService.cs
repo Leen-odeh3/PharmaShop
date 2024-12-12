@@ -1,51 +1,58 @@
-﻿using AutoMapper;
-using pharmacy.Core.Contracts.IServices;
-using pharmacy.Core.Contracts;
-using pharmacy.Core.DTOs.Cart;
+﻿using pharmacy.Core;
+using pharmacy.Core.DTOs.PaymentMethod;
+using pharmacy.Core.DTOs.shared;
 using pharmacy.Core.Entities;
-using pharmacy.Core;
+using pharmacy.Core.Services.Contract;
+
 namespace pharmacy.Application.Services;
+
 public class CartService : ICartService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IMapper _mapper;
+    private readonly IPayService _payService;
 
-    public CartService(IUnitOfWork unitOfWork, IMapper mapper)
+    public CartService(IUnitOfWork unitOfWork,IPayService payService)
     {
         _unitOfWork = unitOfWork;
-        _mapper = mapper;
+        _payService = payService;
+    }
+    public async Task<ServiceResponse> CheckOut(Checkout checkout)
+    {
+        var (Products, totalAmount) = await GetTotalAmount(checkout.carts);
+
+        var paymentMethods = await _unitOfWork.PaymentMethodRepository.GetPaymentMethods();
+        var isValidPayment = paymentMethods.Any(pm => pm.PaymentMethodId == checkout.PaymentMethodId);
+
+        if (checkout.PaymentMethodId == paymentMethods.FirstOrDefault()!.PaymentMethodId)
+          return  await _payService.Pay(totalAmount, Products,checkout.carts);
+
+        return new ServiceResponse(false, "Invalid Payment");
     }
 
-    public async Task<CartResponseDto> AddCartAsync(CartRequestDto cartRequestDto)
+
+    public async Task<ServiceResponse> SaveCheckoutHistory(IEnumerable<CreateAchieve> achieves)
     {
-        var cart = _mapper.Map<Cart>(cartRequestDto);
-        cart.AddedDate = DateTime.Now;
-        var addedCart = await _unitOfWork.cartRepository.CreateAsync(cart);
-        _unitOfWork.Complete();
-        return _mapper.Map<CartResponseDto>(addedCart);
+        var result = await _unitOfWork.cartRepository.SaveCheckoutHistory((IEnumerable<Achieve>)achieves);
+        return result > 0 ? new ServiceResponse(true, "Checkout achieved") : new ServiceResponse(false, "Checkout Not achieved");
     }
 
-    public async Task<CartResponseDto> UpdateCartAsync(int id, CartRequestDto cartRequestDto)
+    private async Task<(IEnumerable<Product>, decimal)> GetTotalAmount(IEnumerable<Cart> carts)
     {
-        var cart = await _unitOfWork.cartRepository.GetByID(id);
-        if (cart == null) return null;
+        if (!carts.Any()) return (Enumerable.Empty<Product>(), 0);
 
-        _mapper.Map(cartRequestDto, cart);
-        var updatedCart = await _unitOfWork.cartRepository.UpdateAsync(id,cart);
-        _unitOfWork.Complete();
-        return _mapper.Map<CartResponseDto>(updatedCart);
-    }
+        var products = await _unitOfWork.productRepository.GetAllAsync();
+        if (!products.Any()) return (Enumerable.Empty<Product>(), 0);
 
-    public async Task<CartResponseDto> GetCartByIdAsync(int id)
-    {
-        var cart = await _unitOfWork.cartRepository.GetByID(id);
-        return _mapper.Map<CartResponseDto>(cart);
-    }
+        var cartProducts = carts
+            .Select(cartItem => products.FirstOrDefault(p => p.ProductId == cartItem.ProductId))
+            .Where(product => product != null)
+            .ToList();
 
-    public async Task<string> DeleteCartAsync(int id)
-    {
-        await _unitOfWork.cartRepository.DeleteAsync(id);
-        _unitOfWork.Complete();
-        return "Deleted success";
+        var totalAmount = carts
+            .Where(cartItem => cartProducts.Any(p => p.ProductId == cartItem.ProductId))
+            .Sum(cartItem => cartItem.Quantity *
+                cartProducts.First(p => p.ProductId == cartItem.ProductId)!.Price);
+
+        return (products, totalAmount);
     }
 }

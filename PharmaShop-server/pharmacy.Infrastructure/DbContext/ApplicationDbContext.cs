@@ -10,6 +10,15 @@ public class ApplicationDbContext : IdentityDbContext<User>
     {
         
     }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.Entity<PaymentMethod>().HasData(
+            new PaymentMethod { PaymentMethodId = Guid.NewGuid(), PaymentMethodName = "Credit Card" },
+            new PaymentMethod { PaymentMethodId = Guid.NewGuid(), PaymentMethodName = "PayPal" }
+        );
+    }
 
     public DbSet<Category> categories { get; set; }
     public DbSet<Product> products { get; set; }    
@@ -18,11 +27,9 @@ public class ApplicationDbContext : IdentityDbContext<User>
     public DbSet<Admin> admins { get; set; }
     public DbSet<Pharmacist> pharmacists { get; set; }
     public DbSet<Discount> discounts { get; set; }
-    public DbSet<Order> orders { get; set; }
-    public DbSet<OrderItem> ordersItem { get; set; }
     public DbSet<Review> Reviews { get; set; }
-    public DbSet<Cart> Carts { get; set; }
-    public DbSet<CartItem> CartItems { get; set; }
-    public DbSet<PaymentMethod> PaymentMethods { get; set; }
-    public DbSet<Transaction> Transactions { get; set; }
+    public DbSet<WishlistItem> WishlistItems { get; set; }
+    public DbSet<PaymentMethod> paymentMethods { get; set; }
+    public DbSet<Achieve> CheckOutAchieves { get; set; }
+
 }

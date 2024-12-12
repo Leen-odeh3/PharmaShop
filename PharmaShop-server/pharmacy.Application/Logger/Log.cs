@@ -1,5 +1,4 @@
-﻿
-using pharmacy.Core.Contracts.ILogger;
+﻿using pharmacy.Core.ILogger;
 
 namespace pharmacy.Infrastructure.Application.Logger;
 public class Log : ILog

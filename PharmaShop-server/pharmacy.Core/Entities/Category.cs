@@ -1,8 +1,6 @@
 ﻿
-using pharmacy.Core.Entities.Helpers;
-
 namespace pharmacy.Core.Entities;
-public class Category : BaseEntity
+public class Category 
 {
     public int CategoryId { get; set; }
     public string CategoryName { get; set; }

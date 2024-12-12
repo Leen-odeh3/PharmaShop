@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using pharmacy.Core.DTOs.Cart;
-using pharmacy.Core.Contracts.IServices;
-using pharmacy.Api.Responses;
+using pharmacy.Core.DTOs.PaymentMethod;
+using pharmacy.Core.Entities;
+using pharmacy.Core.Services.Contract;
+using System.Collections.Generic;
 
 namespace pharmacy.Api.Controllers;
 
@@ -10,45 +11,29 @@ namespace pharmacy.Api.Controllers;
 public class CartController : ControllerBase
 {
     private readonly ICartService _cartService;
-    private readonly ICartItemService _cartItemService;
-    private readonly IResponseHandler _responseHandler;
 
-    public CartController(ICartService cartService, ICartItemService cartItemService,IResponseHandler responseHandler)
+    public CartController(ICartService cartService)
     {
         _cartService = cartService;
-        _cartItemService = cartItemService;
-        _responseHandler = responseHandler;
     }
 
-    [HttpPost]
-    public async Task<IActionResult> AddCart([FromBody] CartRequestDto cartRequestDto)
+    [HttpPost("save-checkout")]
+    public async Task<IActionResult> SaveCheckOut([FromBody] IEnumerable<CreateAchieve> achieves)
     {
-        var result = await _cartService.AddCartAsync(cartRequestDto);
-        return _responseHandler.Created(result,"added success");
-            }
+        var response = await _cartService.SaveCheckoutHistory(achieves);
+        if (!ModelState.IsValid)
+            return BadRequest(response.Message);
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetCart(int id)
-    {
-        var result = await _cartService.GetCartByIdAsync(id);
-        if (result is null)
-            return _responseHandler.NotFound("Cart null");
-        return _responseHandler.Success(result, "Get Cart success");
+        return Ok(response);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCart(int id, [FromBody] CartRequestDto cartRequestDto)
+    [HttpPost("checkout")]
+    public async Task<IActionResult> Checkout([FromBody] Checkout checkout)
     {
-        var result = await _cartService.UpdateCartAsync(id, cartRequestDto);
-        if (result is null)
-            return _responseHandler.NotFound("Cart null");
-        return _responseHandler.Success(result, "Updated success");
-    }
+        var response = await _cartService.CheckOut(checkout);
+        if (!ModelState.IsValid)
+            return BadRequest(response.Message);
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCart(int id)
-    {
-        await _cartService.DeleteCartAsync(id);
-        return _responseHandler.NoContent("Deleted success");
+        return Ok(response);  
     }
 }

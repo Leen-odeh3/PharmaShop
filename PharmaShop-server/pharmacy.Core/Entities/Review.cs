@@ -1,6 +1,6 @@
 ﻿
 namespace pharmacy.Core.Entities;
-public class Review
+public class Review 
 {
     public int ReviewId { get; set; }
     public string Comment { get; set; }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using pharmacy.Core.Contracts;
 using pharmacy.Core.Entities;
+using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
 
 namespace pharmacy.Infrastructure.Repositories;
@@ -36,6 +36,18 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
         }
 
         return product;
+    }
+
+    public async Task<Product> GetProductImagesAsync(int id)
+    {
+        return await _context.products
+            .Where(p => p.ProductId == id)
+            .Select(p => new Product
+            {
+                ProductId = p.ProductId,
+                ImageUrls = p.ImageUrls
+            })
+            .FirstOrDefaultAsync();
     }
 
 }

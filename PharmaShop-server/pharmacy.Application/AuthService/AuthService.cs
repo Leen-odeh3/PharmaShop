@@ -1,14 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using pharmacy.Core.Contracts.IAuthService;
 using pharmacy.Core.DTOs.Admin;
 using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.DTOs.Pharmacist;
 using pharmacy.Core.DTOs.Login;
 using pharmacy.Core.Entities.Identity;
 using pharmacy.Core.Enums;
-using pharmacy.Core.Contracts.ILogger;
 using System.IdentityModel.Tokens.Jwt;
 using pharmacy.Core.Entities;
+using pharmacy.Core.DTOs.shared;
+using pharmacy.Core.ILogger;
+using pharmacy.Core.IAuthService;
 
 namespace pharmacy.Infrastructure.Application.AuthService;
 
@@ -35,7 +36,7 @@ public class AuthService : IAuthService
             UserName = registerAdminDto.Email,
             FirstName = registerAdminDto.FirstName,
             LastName = registerAdminDto.LastName,
-            UserType = Roles.Admin  
+            UserType = Roles.Admin.ToString()  
         };
 
         var result = await _userManager.CreateAsync(admin, registerAdminDto.Password);
@@ -70,7 +71,7 @@ public class AuthService : IAuthService
             UserName = customerRequestDto.Email.Split('@')[0],
             FirstName = customerRequestDto.FirstName,
             LastName = customerRequestDto.LastName,
-            UserType = Roles.Customer  
+            UserType = Roles.Customer.ToString()  
         };
 
         var result = await _userManager.CreateAsync(customer, customerRequestDto.Password);
@@ -101,7 +102,7 @@ public class AuthService : IAuthService
             FirstName = pharmacistRequestDto.FirstName,
             LastName = pharmacistRequestDto.LastName,
             LicenseNumber = pharmacistRequestDto.LicenseNumber,
-            UserType = Roles.Pharmacist  
+            UserType = Roles.Pharmacist.ToString()  
         };
 
         var result = await _userManager.CreateAsync(pharmacist, pharmacistRequestDto.Password);
@@ -139,6 +140,7 @@ public class AuthService : IAuthService
         var refreshToken = _tokenService.GenerateRefreshToken();
 
         user.RefreshTokens.Add(refreshToken);
+        user.LastLogin = DateTime.UtcNow;
         await _userManager.UpdateAsync(user);
 
         return new AuthModel
@@ -153,4 +155,52 @@ public class AuthService : IAuthService
             ExpiresOn= jwtToken.ValidTo
     };
     }
+
+    public async Task<string> ChangePasswordAsync(ChangePasswordRequestDto changePasswordRequestDto)
+    {
+        var user = await _userManager.FindByEmailAsync(changePasswordRequestDto.Email);
+        if (user is null)
+        {
+            throw new Exception("User not found.");
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, changePasswordRequestDto.OldPassword, changePasswordRequestDto.NewPassword);
+        if (result.Succeeded)
+        {
+            return "Password changed successfully.";
+        }
+        else
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to change password: {errors}");
+        }
+    }
+
+    public async Task<string> ForgotPasswordAsync(ForgotPasswordRequestDto forgotPasswordRequestDto)
+    {
+        var user = await _userManager.FindByEmailAsync(forgotPasswordRequestDto.Email);
+        if (user is null)
+        {
+            throw new Exception("User not found.");
+        }
+
+        var result = await _userManager.RemovePasswordAsync(user);
+        if (!result.Succeeded)
+        {
+            var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to remove old password: {errors}");
+        }
+
+        var passwordChangeResult = await _userManager.AddPasswordAsync(user, forgotPasswordRequestDto.NewPassword);
+        if (passwordChangeResult.Succeeded)
+        {
+            return "Password reset successfully.";
+        }
+        else
+        {
+            var errors = string.Join(", ", passwordChangeResult.Errors.Select(e => e.Description));
+            throw new Exception($"Failed to reset password: {errors}");
+        }
+    }
+
 }

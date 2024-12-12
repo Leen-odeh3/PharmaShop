@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using pharmacy.Api.Responses;
-using pharmacy.Core.Contracts.IServices;
 using pharmacy.Core.DTOs.Category;
+using pharmacy.Core.Services.Contract;
 
 namespace pharmacy.Api.Controllers;
 
@@ -19,11 +19,11 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost("add-category")]
-    public async Task<IActionResult> AddCategory([FromForm] CategoryRequestDto Dto, [FromForm] List<IFormFile> images)
+    public async Task<IActionResult> AddCategory([FromForm] CategoryRequestDto Dto)
     {
         try
         {
-            var result = await _categoryService.AddCategoryAsync(Dto, images);
+            var result = await _categoryService.AddCategoryAsync(Dto);
             return _responseHandler.Success(result, "Category added successfully.");
         }
         catch (Exception ex)

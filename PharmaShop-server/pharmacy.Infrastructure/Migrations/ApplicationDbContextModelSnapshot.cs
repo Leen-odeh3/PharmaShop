@@ -155,6 +155,31 @@ namespace pharmacy.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("pharmacy.Core.Entities.Achieve", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CeatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CheckOutAchieves");
+                });
+
             modelBuilder.Entity("pharmacy.Core.Entities.Brand", b =>
                 {
                     b.Property<int>("BrandId")
@@ -178,57 +203,6 @@ namespace pharmacy.Infrastructure.Migrations
                     b.ToTable("brands");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Cart", b =>
-                {
-                    b.Property<int>("CartId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartId"));
-
-                    b.Property<DateTime>("AddedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("CartId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Carts");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.CartItem", b =>
-                {
-                    b.Property<int>("CartItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CartItemId"));
-
-                    b.Property<int>("CartId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("CartItemId");
-
-                    b.HasIndex("CartId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("CartItems");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.Category", b =>
                 {
                     b.Property<int>("CategoryId")
@@ -247,14 +221,6 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("ImagePublicIdsJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrlsJson")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -277,9 +243,6 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.Property<DateTime>("EndDateUtc")
                         .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
 
                     b.Property<decimal>("Percentage")
                         .HasColumnType("decimal(18,2)");
@@ -323,6 +286,9 @@ namespace pharmacy.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("LastLogin")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -360,8 +326,9 @@ namespace pharmacy.Infrastructure.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<int>("UserType")
-                        .HasColumnType("int");
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -380,122 +347,31 @@ namespace pharmacy.Infrastructure.Migrations
                     b.UseTphMappingStrategy();
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Order", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderId"));
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CustomerId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("OrderStatus")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("totalPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("OrderId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("orders");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderItem", b =>
-                {
-                    b.Property<int>("OrderItemId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("OrderItemId"));
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("OrderItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("ordersItem");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.PaymentMethod", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("PaymentMethodId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("uniqueidentifier");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccountNumber")
+                    b.Property<string>("PaymentMethodName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<byte>("ExpiryMonth")
-                        .HasColumnType("tinyint");
+                    b.HasKey("PaymentMethodId");
 
-                    b.Property<short>("ExpiryYear")
-                        .HasColumnType("smallint");
+                    b.ToTable("paymentMethods");
 
-                    b.Property<long>("OrderId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("OrderId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Provider")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SecurityCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId1");
-
-                    b.ToTable("PaymentMethods");
+                    b.HasData(
+                        new
+                        {
+                            PaymentMethodId = new Guid("3b66e66b-4866-4dcd-9c7a-7eace5de7b6b"),
+                            PaymentMethodName = "Credit Card"
+                        },
+                        new
+                        {
+                            PaymentMethodId = new Guid("9455d543-8e39-415e-bee8-ea46d0cbb868"),
+                            PaymentMethodName = "PayPal"
+                        });
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Product", b =>
@@ -515,7 +391,7 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("DiscountId")
+                    b.Property<int?>("DiscountId")
                         .HasColumnType("int");
 
                     b.Property<string>("ImagePublicIdsJson")
@@ -585,34 +461,26 @@ namespace pharmacy.Infrastructure.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Transaction", b =>
+            modelBuilder.Entity("pharmacy.Core.Entities.WishlistItem", b =>
                 {
-                    b.Property<long>("Id")
+                    b.Property<int>("WishlistItemId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<long>("PaymentMethodId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("PaymentMethodId1")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("WishlistItemId"));
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("TotalAmount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<string>("UserEmail")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("WishlistItemId");
 
-                    b.HasIndex("PaymentMethodId1");
+                    b.HasIndex("ProductId");
 
-                    b.ToTable("Transactions");
+                    b.ToTable("WishlistItems");
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Admin", b =>
@@ -695,36 +563,6 @@ namespace pharmacy.Infrastructure.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Cart", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.CartItem", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.Cart", "Cart")
-                        .WithMany("CartItems")
-                        .HasForeignKey("CartId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("pharmacy.Core.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cart");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.Identity.User", b =>
                 {
                     b.OwnsMany("pharmacy.Core.Entities.Identity.RefreshToken", "RefreshTokens", b1 =>
@@ -762,47 +600,6 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Navigation("RefreshTokens");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Order", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.OrderItem", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("pharmacy.Core.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.PaymentMethod", b =>
-                {
-                    b.HasOne("pharmacy.Core.Entities.Order", "Order")
-                        .WithMany("PaymentMethods")
-                        .HasForeignKey("OrderId1")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.Product", b =>
                 {
                     b.HasOne("pharmacy.Core.Entities.Brand", "Brand")
@@ -819,9 +616,7 @@ namespace pharmacy.Infrastructure.Migrations
 
                     b.HasOne("pharmacy.Core.Entities.Discount", "Discount")
                         .WithMany()
-                        .HasForeignKey("DiscountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DiscountId");
 
                     b.Navigation("Brand");
 
@@ -849,15 +644,15 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Transaction", b =>
+            modelBuilder.Entity("pharmacy.Core.Entities.WishlistItem", b =>
                 {
-                    b.HasOne("pharmacy.Core.Entities.PaymentMethod", "PaymentMethod")
+                    b.HasOne("pharmacy.Core.Entities.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("PaymentMethodId1")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("PaymentMethod");
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Brand", b =>
@@ -865,21 +660,9 @@ namespace pharmacy.Infrastructure.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("pharmacy.Core.Entities.Cart", b =>
-                {
-                    b.Navigation("CartItems");
-                });
-
             modelBuilder.Entity("pharmacy.Core.Entities.Category", b =>
                 {
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("pharmacy.Core.Entities.Order", b =>
-                {
-                    b.Navigation("OrderItems");
-
-                    b.Navigation("PaymentMethods");
                 });
 #pragma warning restore 612, 618
         }
