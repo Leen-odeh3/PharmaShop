@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using pharmacy.Core.DTOs.Product;
 using pharmacy.Core.Entities;
 using pharmacy.Core.Repositories.Contract;
 using pharmacy.Infrastructure.DbContext;
@@ -9,33 +10,22 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
     public ProductRepository(ApplicationDbContext context) : base(context)
     {
     }
+    private IQueryable<Product> GetProductWithIncludes()
+    {
+        return _context.products
+            .Include(p => p.Brand)
+            .Include(p => p.Category)
+            .Include(p => p.Discount);
+    }
+
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return await _context.products
-            .Include(p => p.Brand)  
-            .Include(p => p.Category) 
-            .ToListAsync();       
+        return await GetProductWithIncludes().ToListAsync();
     }
 
     public async Task<Product> GetByID(int id)
     {
-        var product = await _context.products
-            .Include(p => p.Brand)
-            .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.ProductId == id);
-
-        if (product is null)
-        {
-            Console.WriteLine("Product not found.");
-        }
-        else
-        {
-            Console.WriteLine($"Product Name: {product.ProductName}");
-            Console.WriteLine($"Brand: {product.Brand?.BrandName}");
-            Console.WriteLine($"Category: {product.Category?.CategoryName}");
-        }
-
-        return product;
+        return await GetProductWithIncludes().FirstOrDefaultAsync(p => p.ProductId == id);
     }
 
     public async Task<Product> GetProductImagesAsync(int id)
@@ -49,5 +39,40 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             })
             .FirstOrDefaultAsync();
     }
+    public async Task<ProductResponseDto> CreateAsync(ProductRequestDto productRequest)
+    {
+        var discount = await _context.discounts
+            .FirstOrDefaultAsync(d => d.DiscountId == productRequest.discountId);
 
+        if (discount == null)
+        {
+            discount = new Discount { Percentage = 0 };
+        }
+
+        var product = new Product
+        {
+            ProductName = productRequest.ProductName,
+            ProductDescription = productRequest.ProductDescription,
+            Price = productRequest.Price,
+            CategoryId = productRequest.CategoryId,
+            BrandId = productRequest.BrandId,
+            Discount = discount 
+        };
+
+        _context.products.Add(product);
+        await _context.SaveChangesAsync();
+
+        var productResponseDto = new ProductResponseDto
+        {
+            ProductId = product.ProductId,
+            ProductName = product.ProductName,
+            ProductDescription = product.ProductDescription,
+            Price = product.Price,
+            Category = product.Category?.CategoryName, 
+            Brand = product.Brand?.BrandName, 
+            Percentage = product.Discount?.Percentage ?? 0 
+        };
+
+        return productResponseDto;
+    }
 }

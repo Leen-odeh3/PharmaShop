@@ -1,5 +1,4 @@
 ﻿using pharmacy.Core.Exceptions;
-using System.IO;
 using System.Net;
 using System.Text.Json;
 

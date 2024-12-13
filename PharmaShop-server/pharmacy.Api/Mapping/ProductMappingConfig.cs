@@ -25,7 +25,7 @@ public class ProductMappingConfig
                 string.IsNullOrEmpty(src.ImagePublicIdsJson)
                     ? new List<string>()
                     : JsonSerializer.Deserialize<List<string>>(src.ImagePublicIdsJson, options))
-            .Map(dest => dest.Discount, src => src.DiscountId)
+            .Map(dest => dest.Percentage, src => src.Discount.Percentage)
             .Map(dest => dest.Category, src => src.Category.CategoryName)
             .Map(dest => dest.Brand, src => src.Brand.BrandName);
     }
