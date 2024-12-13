@@ -1,12 +1,8 @@
 using pharmacy.Api.Extentions;
-using pharmacy.Api.Mapping;
 using pharmacy.Api.Middlewares;
 using pharmacy.Application;
 using pharmacy.Infrastructure;
 using Serilog;
-using Serilog.Extensions.Logging;
-using Microsoft.Extensions.Hosting;
-
 namespace pharmacy.Api;
 public class Program
 {

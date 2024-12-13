@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using pharmacy.Application.AuthService;
 using pharmacy.Application.Services;
 using pharmacy.Core;
 using pharmacy.Core.IAuthService;
@@ -16,7 +17,10 @@ public static class ModuleApplicationDependencies
     public static IServiceCollection AddApplicationDependencies(this IServiceCollection services)
     {
         services.AddScoped<ILog, Log>();
-        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IUserRegistrationService,UserRegistrationService>();
+        services.AddScoped<ILoginService, LoginService>();
+        services.AddScoped<IPasswordService,PasswordService>();
+
         //  services.AddScoped<IUserManager,UserManager>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<ICategoryService, CategoryService>();

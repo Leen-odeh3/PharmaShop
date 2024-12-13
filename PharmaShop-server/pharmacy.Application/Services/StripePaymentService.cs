@@ -17,6 +17,8 @@ public class StripePaymentService : IPayService
             var lineItems = new List<SessionLineItemOptions>();
             foreach (var item in cartProducts)
             {
+                var discount = item.Discount?.Percentage ?? 0;
+                var discountedPrice = item.Price - (item.Price * discount / 100);
                 var pQuantity = carts.FirstOrDefault(_ => _.ProductId == item.ProductId);
                 lineItems.Add(new SessionLineItemOptions
                 {
@@ -28,7 +30,7 @@ public class StripePaymentService : IPayService
                             Name = item.ProductName,
                             Description = item.ProductDescription
                         },
-                        UnitAmount = (long)(item.Price * 100)
+                        UnitAmount = (long)(discountedPrice * 100)
                     },
                     Quantity = pQuantity!.Quantity,
                 });
@@ -36,11 +38,11 @@ public class StripePaymentService : IPayService
 
             var options = new SessionCreateOptions
             {
-                PaymentMethodTypes = ["usd"],
+                PaymentMethodTypes = new List<string> { "card" },
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https:/localhost:5068/payment-success",
-                CancelUrl = "http:/localhost:5068/payment-cancel"
+                SuccessUrl = "https://myapp.com/payment-success",
+                CancelUrl = "https://myapp.com/payment-cancel"
             };
 
             var service = new SessionService();

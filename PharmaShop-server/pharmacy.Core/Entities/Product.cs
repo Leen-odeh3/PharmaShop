@@ -19,6 +19,7 @@ public class Product
     public int BrandId { get; set; }
     public Brand Brand { get; set; }
     public Discount Discount { get; set; }
+    [ForeignKey("Discount")]
     public int? DiscountId { get; set; }
     private string _imageUrlsJson;
     private string _imagePublicIdsJson;

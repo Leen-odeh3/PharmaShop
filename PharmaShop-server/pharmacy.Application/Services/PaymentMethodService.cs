@@ -1,8 +1,6 @@
 ﻿using pharmacy.Core;
 using pharmacy.Core.Entities;
-using pharmacy.Core.Repositories.Contract;
 using pharmacy.Core.Services.Contract;
-using System.Collections.Generic;
 
 namespace pharmacy.Application.Services;
 public class PaymentMethodService : IPaymentMethodService

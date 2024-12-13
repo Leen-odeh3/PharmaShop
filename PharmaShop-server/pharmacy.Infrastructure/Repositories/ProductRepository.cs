@@ -9,33 +9,22 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
     public ProductRepository(ApplicationDbContext context) : base(context)
     {
     }
+    private IQueryable<Product> GetProductWithIncludes()
+    {
+        return _context.products
+            .Include(p => p.Brand)
+            .Include(p => p.Category)
+            .Include(p => p.Discount);
+    }
+
     public async Task<IEnumerable<Product>> GetAllAsync()
     {
-        return await _context.products
-            .Include(p => p.Brand)  
-            .Include(p => p.Category) 
-            .ToListAsync();       
+        return await GetProductWithIncludes().ToListAsync();
     }
 
     public async Task<Product> GetByID(int id)
     {
-        var product = await _context.products
-            .Include(p => p.Brand)
-            .Include(p => p.Category)
-            .FirstOrDefaultAsync(p => p.ProductId == id);
-
-        if (product is null)
-        {
-            Console.WriteLine("Product not found.");
-        }
-        else
-        {
-            Console.WriteLine($"Product Name: {product.ProductName}");
-            Console.WriteLine($"Brand: {product.Brand?.BrandName}");
-            Console.WriteLine($"Category: {product.Category?.CategoryName}");
-        }
-
-        return product;
+        return await GetProductWithIncludes().FirstOrDefaultAsync(p => p.ProductId == id);
     }
 
     public async Task<Product> GetProductImagesAsync(int id)
@@ -50,4 +39,18 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
             .FirstOrDefaultAsync();
     }
 
+    public async Task<Product> UpdateAsync(int id, Product entity)
+    {
+        var existingEntity = await _context.products
+            .Include(p => p.Brand)
+            .Include(p => p.Category)
+            .Include(p => p.Discount)
+            .FirstOrDefaultAsync(p => p.ProductId == id);
+
+        _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+
+        await _context.SaveChangesAsync();
+
+        return existingEntity; 
+    }
 }

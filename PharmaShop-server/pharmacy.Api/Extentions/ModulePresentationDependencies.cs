@@ -6,17 +6,11 @@ using pharmacy.Api.Responses;
 using pharmacy.Api.Validation;
 using pharmacy.Application.Services;
 using pharmacy.Core;
-using pharmacy.Core.DTOs.Customer;
 using pharmacy.Core.Entities.Helpers;
 using pharmacy.Core.Entities.Identity;
-using pharmacy.Core.Repositories.Contract;
 using pharmacy.Core.Services.Contract;
-using pharmacy.Infrastructure.Application;
 using pharmacy.Infrastructure.DbContext;
-using pharmacy.Infrastructure.Repositories;
 using StackExchange.Redis;
-using Stripe;
-using System;
 using System.Reflection;
 using System.Text;
 
@@ -30,19 +24,21 @@ public static class ModulePresentationDependencies
         services.AddSingleton<IConfiguration>(configuration);
 
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-     .AddJwtBearer(options =>
-     {
-         options.TokenValidationParameters = new TokenValidationParameters
-         {
-             ValidateIssuer = true,
-             ValidateAudience = true,
-             ValidateLifetime = true,
-             ValidateIssuerSigningKey = true,
-             ValidIssuer = configuration["JWT:Issuer"],
-             ValidAudience = configuration["JWT:Audience"],
-             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]))
-         };
-     });
+      .AddJwtBearer(options =>
+      {
+          options.TokenValidationParameters = new TokenValidationParameters
+          {
+              ValidateIssuer = true,
+              ValidateAudience = true,
+              ValidateLifetime = true,
+              ValidateIssuerSigningKey = true,
+              ValidIssuer = configuration["JWT:Issuer"],
+              ValidAudience = configuration["JWT:Audience"],
+              IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"])),
+              RoleClaimType = "role"
+          };
+      });
+
         MapsterConfig.Configure();
         ProductMappingConfig.Configure();
 
@@ -51,10 +47,11 @@ public static class ModulePresentationDependencies
         services.Configure<JWT>(configuration.GetSection("JWT"));
 
         services.AddScoped<IPhotoService, PhotoService>();
-        /* services.AddAuthorization(options =>
+
+        services.AddAuthorization(options =>
         {
             options.AddPolicy("Admin", policy => policy.RequireRole("Admin"));
-        });*/
+        });
 
         services.AddSingleton<IConnectionMultiplexer>(sp =>
         {

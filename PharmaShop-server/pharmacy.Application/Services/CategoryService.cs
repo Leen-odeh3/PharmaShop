@@ -4,6 +4,7 @@ using pharmacy.Core;
 using pharmacy.Core.Services.Contract;
 using Mapster;
 using pharmacy.Core.ILogger;
+using pharmacy.Core.Exceptions;
 
 namespace pharmacy.Application.Services;
 public class CategoryService : ICategoryService
@@ -21,6 +22,9 @@ public class CategoryService : ICategoryService
     {
         try
         {
+            if (string.IsNullOrEmpty(categoryRequestDto.CategoryName))
+                throw new BadRequestException("Category name is required.");
+
             var category = categoryRequestDto.Adapt<Category>(); 
             await _unitOfWork.categoryRepository.CreateAsync(category);
             _unitOfWork.Complete();
@@ -42,10 +46,7 @@ public class CategoryService : ICategoryService
         {
             var category = await _unitOfWork.categoryRepository.GetByID(id);
             if (category is null)
-            {
                 _logger.Log("Category not found for update", "warning");
-                return null;
-            }
 
             categoryRequestDto.Adapt(category); 
             var updatedCategory = await _unitOfWork.categoryRepository.UpdateAsync(id, category);
@@ -92,10 +93,7 @@ public class CategoryService : ICategoryService
         {
             var category = await _unitOfWork.categoryRepository.GetByID(id);
             if (category is null)
-            {
                 _logger.Log("Category not found", "warning");
-                return null;
-            }
 
             _logger.Log("Category retrieved successfully", "info");
             return category.Adapt<CategoryResponseDto>();
