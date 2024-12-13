@@ -364,7 +364,7 @@ namespace pharmacy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentMethodId = new Guid("0f9e47c6-bd20-4a08-a066-55324b2e2076"),
+                            PaymentMethodId = new Guid("26c40083-b3a4-42fc-902c-2fb58ab7d6a8"),
                             PaymentMethodName = "Credit Card"
                         });
                 });
@@ -610,7 +610,7 @@ namespace pharmacy.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("pharmacy.Core.Entities.Discount", "Discount")
-                        .WithMany()
+                        .WithMany("Products")
                         .HasForeignKey("DiscountId");
 
                     b.Navigation("Brand");
@@ -656,6 +656,11 @@ namespace pharmacy.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("pharmacy.Core.Entities.Category", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("pharmacy.Core.Entities.Discount", b =>
                 {
                     b.Navigation("Products");
                 });

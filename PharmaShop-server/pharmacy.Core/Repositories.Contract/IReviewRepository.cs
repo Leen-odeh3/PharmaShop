@@ -4,4 +4,6 @@ using pharmacy.Core.Entities;
 namespace pharmacy.Core.Repositories.Contract;
 public interface IReviewRepository : IGenericRepository<Review>
 {
+    Task<IEnumerable<ReviewResponseDto>> GetReviewsWithProductAndCustomerAsync();
+
 }

@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using pharmacy.Core.DTOs.Category;
+﻿using pharmacy.Core.DTOs.Category;
 
 namespace pharmacy.Core.Services.Contract;
 public interface ICategoryService

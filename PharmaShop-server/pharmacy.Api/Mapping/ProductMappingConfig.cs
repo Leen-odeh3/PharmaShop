@@ -14,20 +14,19 @@ public class ProductMappingConfig
             ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve
         };
 
-        TypeAdapterConfig<ProductRequestDto, Product>.NewConfig();
-
         TypeAdapterConfig<Product, ProductResponseDto>.NewConfig()
-            .Map(dest => dest.ImageUrls, src =>
-                string.IsNullOrEmpty(src.ImageUrlsJson)
-                    ? new List<string>()
-                    : JsonSerializer.Deserialize<List<string>>(src.ImageUrlsJson, options))
-            .Map(dest => dest.ImagePublicIds, src =>
-                string.IsNullOrEmpty(src.ImagePublicIdsJson)
-                    ? new List<string>()
-                    : JsonSerializer.Deserialize<List<string>>(src.ImagePublicIdsJson, options))
-            .Map(dest => dest.Percentage, src => src.Discount.Percentage)
-            .Map(dest => dest.Category, src => src.Category.CategoryName)
-            .Map(dest => dest.Brand, src => src.Brand.BrandName);
+     .Map(dest => dest.ImageUrls, src =>
+         string.IsNullOrEmpty(src.ImageUrlsJson)
+             ? new List<string>()
+             : JsonSerializer.Deserialize<List<string>>(src.ImageUrlsJson, options))
+     .Map(dest => dest.ImagePublicIds, src =>
+         string.IsNullOrEmpty(src.ImagePublicIdsJson)
+             ? new List<string>()
+             : JsonSerializer.Deserialize<List<string>>(src.ImagePublicIdsJson, options))
+     .Map(dest => dest.Percentage, src => src.Discount != null ? src.Discount.Percentage : 0) 
+     .Map(dest => dest.Category, src => src.Category.CategoryName)  
+     .Map(dest => dest.Brand, src => src.Brand.BrandName); 
+
     }
 }
 

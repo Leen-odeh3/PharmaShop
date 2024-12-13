@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
+﻿
 namespace pharmacy.Core.Entities;
 public class Discount 
 {
@@ -13,4 +12,5 @@ public class Discount
     {
         CreatedAtUtc = DateTime.UtcNow;
     }
+    public ICollection<Product> Products { get; set; }  
 }

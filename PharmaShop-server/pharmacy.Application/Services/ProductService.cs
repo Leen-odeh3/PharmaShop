@@ -58,6 +58,11 @@ public async Task<ProductResponseDto> AddProductAsync(ProductRequestDto productD
             var imagePublicIds = uploadResults.Select(result => result.PublicId).ToList();
 
             var product = productDto.Adapt<Product>();
+            if (productDto.DiscountId.HasValue)
+            {
+                var discount = await _unitOfWork.discountRepository.GetByID(productDto.DiscountId.Value);
+                product.Discount = discount;  
+            }
             product.ImageUrls = imageUrls;
             product.ImagePublicIds = imagePublicIds;
             product.ImageUrlsJson = System.Text.Json.JsonSerializer.Serialize(imageUrls);

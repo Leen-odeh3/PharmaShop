@@ -17,7 +17,7 @@ public class CategoryController : ControllerBase
         _categoryService = categoryService;
         _responseHandler = responseHandler;
     }
-
+  //  [Authorize(Roles = "Admin")]
     [HttpPost("add-category")]
     public async Task<IActionResult> AddCategory([FromForm] CategoryRequestDto Dto)
     {
@@ -31,7 +31,7 @@ public class CategoryController : ControllerBase
             return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
         }
     }
-
+  //  [Authorize(Roles = "Admin")]
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryRequestDto categoryRequestDto)
     {
@@ -45,7 +45,7 @@ public class CategoryController : ControllerBase
             return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
         }
     }
-
+   // [Authorize(Roles = "Admin")]
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
