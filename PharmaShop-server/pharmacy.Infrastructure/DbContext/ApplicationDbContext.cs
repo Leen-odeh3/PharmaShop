@@ -15,9 +15,8 @@ public class ApplicationDbContext : IdentityDbContext<User>
         base.OnModelCreating(builder);
 
         builder.Entity<PaymentMethod>().HasData(
-            new PaymentMethod { PaymentMethodId = Guid.NewGuid(), PaymentMethodName = "Credit Card" },
-            new PaymentMethod { PaymentMethodId = Guid.NewGuid(), PaymentMethodName = "PayPal" }
-        );
+            new PaymentMethod { PaymentMethodId = Guid.NewGuid(), PaymentMethodName = "Credit Card" }
+            );
     }
 
     public DbSet<Category> categories { get; set; }

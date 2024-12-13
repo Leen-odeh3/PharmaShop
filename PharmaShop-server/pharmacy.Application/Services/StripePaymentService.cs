@@ -36,11 +36,11 @@ public class StripePaymentService : IPayService
 
             var options = new SessionCreateOptions
             {
-                PaymentMethodTypes = ["usd"],
+                PaymentMethodTypes = new List<string> { "card" },
                 LineItems = lineItems,
                 Mode = "payment",
-                SuccessUrl = "https:/localhost:5068/payment-success",
-                CancelUrl = "http:/localhost:5068/payment-cancel"
+                SuccessUrl = "https://myapp.com/payment-success",
+                CancelUrl = "https://myapp.com/payment-cancel"
             };
 
             var service = new SessionService();

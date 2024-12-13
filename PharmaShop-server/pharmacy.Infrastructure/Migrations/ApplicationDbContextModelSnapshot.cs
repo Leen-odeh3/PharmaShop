@@ -364,13 +364,8 @@ namespace pharmacy.Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentMethodId = new Guid("3b66e66b-4866-4dcd-9c7a-7eace5de7b6b"),
+                            PaymentMethodId = new Guid("0f9e47c6-bd20-4a08-a066-55324b2e2076"),
                             PaymentMethodName = "Credit Card"
-                        },
-                        new
-                        {
-                            PaymentMethodId = new Guid("9455d543-8e39-415e-bee8-ea46d0cbb868"),
-                            PaymentMethodName = "PayPal"
                         });
                 });
 
