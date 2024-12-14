@@ -4,7 +4,6 @@ using pharmacy.Application.Services;
 using pharmacy.Core;
 using pharmacy.Core.IAuthService;
 using pharmacy.Core.ILogger;
-using pharmacy.Core.Repositories.Contract;
 using pharmacy.Core.Services;
 using pharmacy.Core.Services.Contract;
 using pharmacy.Infrastructure.Application.AuthService;
@@ -20,6 +19,7 @@ public static class ModuleApplicationDependencies
         services.AddScoped<IUserRegistrationService,UserRegistrationService>();
         services.AddScoped<ILoginService, LoginService>();
         services.AddScoped<IPasswordService,PasswordService>();
+        services.AddScoped<ICachadResponseService, CachadResponseService>();
 
         //  services.AddScoped<IUserManager,UserManager>();
         services.AddScoped<ITokenService, TokenService>();

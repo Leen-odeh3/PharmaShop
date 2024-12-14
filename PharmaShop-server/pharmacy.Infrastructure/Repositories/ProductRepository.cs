@@ -53,4 +53,10 @@ public class ProductRepository : GenericRepository<Product>, IProductRepository
 
         return existingEntity; 
     }
+    public async Task<IEnumerable<Product>> SearchByNameAsync(string name)
+    {
+        return await GetProductWithIncludes()
+                             .Where(p => EF.Functions.Like(p.ProductName, $"%{name}%"))
+                             .ToListAsync();
+    }
 }

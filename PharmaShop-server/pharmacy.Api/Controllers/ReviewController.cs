@@ -29,6 +29,21 @@ public class ReviewController : ControllerBase
         return _responseHandler.Created(reviewResponseDto, "Review created successfully.");
     }
 
+    [HttpGet("product/{productId}")]
+    public async Task<IActionResult> GetReviewsByProductId(int productId)
+    {
+        try
+        {
+            var reviews = await _reviewService.GetReviewsByProductIdAsync(productId);
+            return _responseHandler.Success(reviews, "Reviews for the product retrieved successfully.");
+        }
+        catch (NotFoundException ex)
+        {
+            return _responseHandler.NotFound(ex.Message);
+        }
+    }
+
+
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateReview(int id, [FromBody] ReviewRequestDto reviewRequestDto)
     {

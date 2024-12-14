@@ -64,6 +64,26 @@ public class CategoryController : ControllerBase
         return _responseHandler.Success(category, "Category retrieved successfully.");
     }
 
+    [HttpGet("get-products/{categoryId}")]
+    public async Task<IActionResult> GetProductsByCategoryId(int categoryId)
+    {
+        try
+        {
+            var result = await _categoryService.GetProductsByCategoryIdAsync(categoryId);
+            if (result is null || !result.Any())
+            {
+                return _responseHandler.NotFound("No products found for this category.");
+            }
+
+            return _responseHandler.Success(result, "Products retrieved successfully.");
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.BadRequest($"An error occurred: {ex.Message}");
+        }
+    }
+
+
     [HttpGet("get-categories")]
     public async Task<IActionResult> GetCategories()
     {

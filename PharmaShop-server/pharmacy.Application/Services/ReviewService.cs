@@ -3,7 +3,8 @@ using pharmacy.Core.DTOs.Review;
 using pharmacy.Core.Entities;
 using pharmacy.Core.Services.Contract;
 using Microsoft.Extensions.Logging;
-using Mapster; 
+using Mapster;
+using pharmacy.Core.Exceptions;
 
 namespace pharmacy.Application.Services;
 
@@ -16,6 +17,29 @@ public class ReviewService : IReviewService
     {
         _unitOfWork = unitOfWork;
         _logger = logger;
+    }
+
+    public async Task<IEnumerable<ReviewResponseDto>> GetReviewsByProductIdAsync(int productId)
+    {
+        try
+        {
+            _logger.LogInformation("Fetching reviews for product with ID {ProductId}.", productId);
+
+            var reviews = await _unitOfWork.reviewRepository.GetReviewsByProductIdAsync(productId);
+
+            if (reviews is null || !reviews.Any())
+            {
+                throw new NotFoundException("No reviews found for the specified product.");
+            }
+
+            _logger.LogInformation("Fetched reviews for product with ID {ProductId} successfully.", productId);
+            return reviews;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "An error occurred while fetching reviews for product with ID {ProductId}.", productId);
+            throw;
+        }
     }
 
     public async Task<ReviewResponseDto> AddReviewAsync(ReviewRequestDto reviewRequestDto)

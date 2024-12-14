@@ -35,6 +35,8 @@ public static class ModuleInfrastructureDependencies
           .AddEntityFrameworkStores<ApplicationDbContext>()
           .AddDefaultTokenProviders();
 
+
+
         return services;
     }
 }

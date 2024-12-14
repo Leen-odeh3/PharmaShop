@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using pharmacy.Api.CustomAttribute;
 using pharmacy.Api.Responses;
 using pharmacy.Core.DTOs.Product;
 using pharmacy.Core.Services.Contract;
@@ -16,6 +17,12 @@ public class ProductController : ControllerBase
         _responseHandler = responseHandler;
     }
 
+    /// <summary>
+    /// Adds a new product along with its images.
+    /// </summary>
+    /// <param name="productDto">The product details.</param>
+    /// <param name="images">The list of images for the product.</param>
+    /// <returns>A response indicating the result of the operation.</returns>
     [HttpPost("Addproduct")]
     public async Task<IActionResult> AddProduct([FromForm] ProductRequestDto productDto, [FromForm] List<IFormFile> images)
     {
@@ -37,11 +44,9 @@ public class ProductController : ControllerBase
         {
             var images = await _productService.GetProductImagesAsync(id);
             if (images == null || images.Count == 0)
-            {
-                return NotFound(new { Message = "No images found for this product." });
-            }
+                return _responseHandler.NotFound("No images found for this product.");        
 
-            return Ok(new { Succeeded = true, Data = images });
+            return _responseHandler.Success(images, "Product images retrieved successfully.");
         }
         catch (Exception ex)
         {
@@ -93,9 +98,29 @@ public class ProductController : ControllerBase
     }
 
     [HttpGet]
+   // [Cachad(200)]
     public async Task<IActionResult> GetAllProducts()
     {
         var products = await _productService.GetAllProductsAsync();
         return _responseHandler.Success(products, "Products retrieved successfully.");
     }
+
+    [HttpGet("search")]
+    public async Task<IActionResult> SearchProducts([FromQuery] string name)
+    {
+        try
+        {
+            var products = await _productService.SearchProductsByNameAsync(name);
+            if (!products.Any())
+                return _responseHandler.NotFound("No products found matching the given name.");
+
+            return _responseHandler.Success(products, "Products retrieved successfully.");
+
+        }
+        catch (Exception ex)
+        {
+            return _responseHandler.BadRequest(ex.Message);
+        }
+    }
+
 }
