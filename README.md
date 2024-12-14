@@ -52,6 +52,8 @@ Welcome to my eCommerce Platform, a scalable and secure web application built us
 
 - **Stripe Payment Integration:**  
   Fully integrated with Stripe for secure and reliable payment processing.
+  
+<img width="886" alt="Checkout" src="https://github.com/user-attachments/assets/f99c4a66-6683-49ee-b7a1-37f0a460447f" />
 
 - **Global Error Handling:**  
   A centralized error handling mechanism to ensure robustness and clean exception logging.
@@ -83,6 +85,17 @@ Improves performance and reduces database load by caching frequently accessed da
 
 ### Error Handling:
 Comprehensive error logging and handling to ensure smooth user experiences and fast issue resolution.
+## Image Storage
+**Cloudinary Integration**
+
+Cloudinary is used for managing and storing images in the Pharma Platform. It provides a scalable, secure, and feature-rich solution for image storage and transformation.
+
+<img width="503" alt="358914909-0c91f3e2-1023-442a-b250-a458db4b0d32" src="https://github.com/user-attachments/assets/e1d14756-853e-4f8e-a5fc-1f9f147ee393" />
+
+We add account informations on appsettings.json and create an entity whose name is CloudinarySettings.
+
+<img width="246" alt="358914917-bb570e84-265c-49ea-8115-721a9784087d" src="https://github.com/user-attachments/assets/96bfdf18-13e7-426a-9306-cd991b389787" />
+
 
 ## 🤝 Contact & Support:
 Feel free to reach out via [LinkedIn](https://www.linkedin.com/in/leen-odeh3/) if you have any questions or would like to discuss the project further!
