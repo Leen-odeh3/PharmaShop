@@ -9,4 +9,6 @@ public interface IProductService
     Task<ProductResponseDto> GetProductByIdAsync(int id);
     Task<IEnumerable<ProductResponseDto>> GetAllProductsAsync();
     Task<List<string>> GetProductImagesAsync(int id);
+    Task<IEnumerable<ProductResponseDto>> SearchProductsByNameAsync(string name);
+
 }

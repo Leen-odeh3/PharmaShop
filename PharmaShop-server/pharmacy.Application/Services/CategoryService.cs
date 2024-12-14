@@ -5,6 +5,7 @@ using pharmacy.Core.Services.Contract;
 using Mapster;
 using pharmacy.Core.ILogger;
 using pharmacy.Core.Exceptions;
+using pharmacy.Core.DTOs.Product;
 
 namespace pharmacy.Application.Services;
 public class CategoryService : ICategoryService
@@ -18,6 +19,24 @@ public class CategoryService : ICategoryService
         _logger = logger;
     }
 
+    public async Task<List<ProductResponseDto>> GetProductsByCategoryIdAsync(int categoryId)
+    {
+        try
+        {
+            var products = await _unitOfWork.categoryRepository.GetProductsByCategoryIdAsync(categoryId);
+            if (products is null || !products.Any())
+            {
+                _logger.Log("No products found for this category", "warning");
+                return new List<ProductResponseDto>();
+            }
+            return products.Adapt<List<ProductResponseDto>>();
+        }
+        catch (Exception ex)
+        {
+            _logger.Log($"Error while retrieving products by category: {ex.Message}", "error");
+            throw;
+        }
+    }
     public async Task<CategoryResponseDto> AddCategoryAsync(CategoryRequestDto categoryRequestDto)
     {
         try

@@ -174,4 +174,10 @@ public async Task<ProductResponseDto> AddProductAsync(ProductRequestDto productD
             throw;
         }
     }
+
+    public async Task<IEnumerable<ProductResponseDto>> SearchProductsByNameAsync(string name)
+    {
+        var products = await _unitOfWork.productRepository.SearchByNameAsync(name);
+        return products.Adapt<IEnumerable<ProductResponseDto>>();
+    }
 }

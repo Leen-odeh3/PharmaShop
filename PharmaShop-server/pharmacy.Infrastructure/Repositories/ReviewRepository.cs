@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Mapster;
+using Microsoft.EntityFrameworkCore;
 using pharmacy.Core.DTOs.Review;
 using pharmacy.Core.Entities;
 using pharmacy.Core.ILogger;
@@ -29,4 +30,17 @@ public class ReviewRepository:GenericRepository<Review> ,IReviewRepository
             })
             .ToListAsync();
     }
+    public async Task<IEnumerable<ReviewResponseDto>> GetReviewsByProductIdAsync(int productId)
+    {
+        var reviews = await _context.Reviews
+            .Where(r => r.ProductId == productId)
+            .Include(r => r.Product)
+            .Include(r => r.Customer) 
+            .ToListAsync();
+
+        var reviewDtos = reviews.Adapt<IEnumerable<ReviewResponseDto>>();
+
+        return reviewDtos;
+    }
+
 }
