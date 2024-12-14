@@ -5,14 +5,15 @@
 ## Overview 💥  
 Welcome to my eCommerce Platform, a scalable and secure web application built using .NET Core 8 with Onion Architecture. This design ensures clean code separation, maintainability, and scalability for optimal performance and growth.
 
-# URL Documentation:  
+## URL Documentation:  
 [API Documentation Link](https://documenter.getpostman.com/view/27399877/2sAYHxoQ5m)
 
-# Highlights  
+## Highlights  
 ✅ **Tech Stack & Key Features:**
+
 - **ASP.NET Core 8.0:**  
   The latest version of ASP.NET Core, providing a fast, secure, and reliable framework for building modern APIs and web applications.
-  
+
 - **Onion Architecture:**  
   A layered architecture designed to separate core business logic from dependencies like the database and UI, ensuring maintainability and scalability.
 
@@ -55,27 +56,28 @@ Welcome to my eCommerce Platform, a scalable and secure web application built us
 - **Global Error Handling:**  
   A centralized error handling mechanism to ensure robustness and clean exception logging.
 
-# 🌟 Features:
-## User Registration & Login:
+## 🌟 Features:
+### User Registration & Login:
 Complete authentication system with role-based management (admin, customer, pharmacist).
 
-## JWT-Based Authentication:
+### JWT-Based Authentication:
 Secure token generation, token refresh, and role-based authentication using JWT.
 
-## Product Management: 
+### Product Management:  
 CRUD operations for managing products, including filtering by category and price.
 
-## Shopping Cart:
+### Shopping Cart:
 Ability to add, update, or remove items from the shopping cart.
 
-## Order Management: 
+### Order Management:  
 Create, view, and track orders. Integrated with Stripe for secure payments.
 
-## Data Caching:
+### Data Caching:
 Improves performance and reduces database load by caching frequently accessed data.
 
-## Error Handling:
+### Error Handling:
 Comprehensive error logging and handling to ensure smooth user experiences and fast issue resolution.
 
-# 🤝 Contact & Support:
+## 🤝 Contact & Support:
 Feel free to reach out via [LinkedIn](https://www.linkedin.com/in/leen-odeh3/) if you have any questions or would like to discuss the project further!
+
