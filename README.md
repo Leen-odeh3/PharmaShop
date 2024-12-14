@@ -69,8 +69,14 @@ CRUD operations for managing products, including filtering by category and price
 ### Shopping Cart:
 Ability to add, update, or remove items from the shopping cart.
 
-### Order Management:  
-Create, view, and track orders. Integrated with Stripe for secure payments.
+### Wishlist:  
+Allow users to add products to their wishlist for future purchase consideration.
+
+### Discounts :  
+Offer discount codes or promotional coupons for customers to redeem at checkout.
+
+### Reviews & Ratings:  
+Users can review and rate products, providing valuable feedback for other customers.
 
 ### Data Caching:
 Improves performance and reduces database load by caching frequently accessed data.
